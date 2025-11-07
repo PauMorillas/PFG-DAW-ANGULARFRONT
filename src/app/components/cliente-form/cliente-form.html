@@ -1,10 +1,10 @@
 <p-card header="Formulario de Usuario">
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <fieldset>
+        <fieldset class="m-1 p-3 mb-1 pt-1">
             <legend>Datos del usuario obligatorios</legend>
             <div class="p-fluid">
-                <div class="field">
-                    <label for="nombre">Nombre</label>
+                <div class="field mb-3">
+                    <label for="nombre" class="montserrat-light">Nombre</label>
                     <input pInputText id="nombre" type="text" formControlName="nombre"
                         [ngClass]="{ 'ng-invalid': userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched }" />
 
@@ -13,7 +13,7 @@
                     </small>
                 </div>
 
-                <div class="field">
+                <div class="field mb-3">
                     <label for="email">Email</label>
                     <input pInputText id="email" type="email" formControlName="email"
                         [ngClass]="{ 'ng-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched }" />
@@ -35,9 +35,9 @@
             </div>
         </fieldset>
 
-        <div class="field">
-            <fieldset>
-                <legend>Datos del usuario opcionales</legend>
+        <div class="field ">
+            <fieldset class="m-1 p-3 mb-3 pt-1">
+                <legend>Datos de usuario opcionales</legend>
 
                 <label for="telf">Telefono (Opcional)</label>
                 <input pInputText id="telf" type="tel" formControlName="telf"
@@ -49,8 +49,9 @@
             </fieldset>
         </div>
 
-        <p-button type="submit" label="Enviar" [disabled] ="userForm.invalid">
-            
-        </p-button>
+        <div class="flex justify-content-center m-2">
+            <p-button type="submit" label="Enviar" [disabled]="userForm.invalid">
+            </p-button>
+        </div>
     </form>
 </p-card>
