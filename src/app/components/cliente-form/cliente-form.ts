@@ -5,20 +5,21 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cliente-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule],
+  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule],
   templateUrl: './cliente-form.html',
   styleUrl: './cliente-form.css',
 })
 // Inyecta el servicio por constructor
 export class ClienteForm implements OnInit {
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
-  messageService: any;
-  constructor(private clienteService: ClienteService, messageService: MessageService) { }
+  isIncorrectForm: boolean = false;
+
+  constructor(private clienteService: ClienteService, private messageService: MessageService) { }
 
   public guardarCliente() {
     // Llama al método del servicio para guardar el cliente
@@ -28,10 +29,14 @@ export class ClienteForm implements OnInit {
   // Al iniciar el componente, configura el formulario reactivo con Validators
   ngOnInit(): void {
     this.userForm = new FormGroup({
-      nombre: new FormControl('Manolito', Validators.required), // Campo 'name' es requerido
+      nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
       email: new FormControl('ejemplo@gmail.com', [Validators.required, Validators.email]),
-      telefono: new FormControl(''), // Campo 'telefono' no es requerido;
-      pass: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')])
+      telf: new FormControl(''), // Campo 'telefono' no es requerido;
+      pass: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')
+      ])
       // Mínimo ocho caracteres, al menos una letra y un número
     });
   }
@@ -71,7 +76,7 @@ export class ClienteForm implements OnInit {
   getErrorMessage(controlName: string): string | null {
     const control = this.userForm.get(controlName);
 
-    // 1. Si no hay control, o no se ha tocado, o es válido, no hay mensaje.
+    // 1. Si no hay control, o no se ha tocado, o es válido, no hay mensaje de error.
     if (!control || !control.touched || control.valid) {
       return null;
     }
@@ -86,7 +91,7 @@ export class ClienteForm implements OnInit {
 
     if (controlName === 'pass') {
       if (control.errors?.['minlength']) {
-        const requiredLength = control.errors['minLength'].requiredLength;
+        const requiredLength = control.errors?.['minlength'].requiredLength || 8;
         return `La contraseña debe tener al menos ${requiredLength} caracteres`;
       }
 

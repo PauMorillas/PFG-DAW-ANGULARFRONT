@@ -5,4 +5,4 @@ export interface Cliente {
     email: string;
     pass: string;
     // ... más campos según necesidad
-    }
+}

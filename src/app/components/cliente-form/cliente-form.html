@@ -1,19 +1,56 @@
-<p-button label="Guardar cliente" (click)="guardarCliente()"></p-button>
-
 <p-card header="Formulario de Usuario">
-   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <fieldset>
             <legend>Datos del usuario obligatorios</legend>
             <div class="p-fluid">
                 <div class="field">
                     <label for="nombre">Nombre</label>
-                    <p-inputtext id="nombre"type="text" formControlName="nombre">
-                        
-                    </p-inputtext>
+                    <input pInputText id="nombre" type="text" formControlName="nombre"
+                        [ngClass]="{ 'ng-invalid': userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched }" />
 
-                    <small class="p-error"></small>
+                    <small class="p-error" *ngIf="getErrorMessage('nombre') as errorMessage">
+                        {{errorMessage}}
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input pInputText id="email" type="email" formControlName="email"
+                        [ngClass]="{ 'ng-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched }" />
+
+                    <small class="p-error" *ngIf="getErrorMessage('email') as errorMessage">
+                        {{errorMessage}}
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label for="pass">Contraseña</label>
+                    <input pInputText id="pass" type="password" formControlName="pass"
+                        [ngClass]="{ 'ng-invalid': userForm.get('pass')?.invalid && userForm.get('pass')?.touched }" />
+
+                    <small class="p-error" *ngIf="getErrorMessage('pass') as errorMessage">
+                        {{errorMessage}}
+                    </small>
                 </div>
             </div>
-        </fieldset> 
-   </form>
+        </fieldset>
+
+        <div class="field">
+            <fieldset>
+                <legend>Datos del usuario opcionales</legend>
+
+                <label for="telf">Telefono (Opcional)</label>
+                <input pInputText id="telf" type="tel" formControlName="telf"
+                    [ngClass]="{ 'ng-invalid': userForm.get('telf')?.invalid && userForm.get('telf')?.touched }" />
+
+                <small class="p-error" *ngIf="getErrorMessage('telf') as errorMessage">
+                    {{errorMessage}}
+                </small>
+            </fieldset>
+        </div>
+
+        <p-button type="submit" label="Enviar" [disabled] ="userForm.invalid">
+            
+        </p-button>
+    </form>
 </p-card>
