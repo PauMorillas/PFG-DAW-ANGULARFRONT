@@ -1,1 +1,19 @@
 <p-button label="Guardar cliente" (click)="guardarCliente()"></p-button>
+
+<p-card header="Formulario de Usuario">
+   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <fieldset>
+            <legend>Datos del usuario obligatorios</legend>
+            <div class="p-fluid">
+                <div class="field">
+                    <label for="nombre">Nombre</label>
+                    <p-inputtext id="nombre"type="text" formControlName="nombre">
+                        
+                    </p-inputtext>
+
+                    <small class="p-error"></small>
+                </div>
+            </div>
+        </fieldset> 
+   </form>
+</p-card>

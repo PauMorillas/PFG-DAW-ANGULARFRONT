@@ -3,5 +3,6 @@ export interface Cliente {
     nombre: string;     // requerido por defecto
     telefono?: string;
     email: string;
+    pass: string;
     // ... más campos según necesidad
     }
