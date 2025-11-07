@@ -13,7 +13,7 @@ legend {
     padding: 0 0.5rem;
     margin-bottom: 0.5rem;
     /* Usar un color secundario para la línea de énfasis */
-    border-bottom: 2px solid var(--surface-border, #4b5563); 
+    border-bottom: 1px solid var(--surface-border, #8693a6); 
     line-height: 1.5;
 }
 

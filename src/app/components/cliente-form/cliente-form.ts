@@ -32,12 +32,12 @@ export class ClienteForm implements OnInit {
       nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
       email: new FormControl('ejemplo@gmail.com', [Validators.required, Validators.email]),
       telf: new FormControl(''), // Campo 'telefono' no es requerido;
+      // Mínimo ocho caracteres, al menos una letra y un número
       pass: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
         Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')
       ])
-      // Mínimo ocho caracteres, al menos una letra y un número
     });
   }
 
@@ -93,6 +93,10 @@ export class ClienteForm implements OnInit {
       if (control.errors?.['minlength']) {
         const requiredLength = control.errors?.['minlength'].requiredLength || 8;
         return `La contraseña debe tener al menos ${requiredLength} caracteres`;
+      }
+
+      if (control?.value.includes(' ')) {
+        return 'La contraseña no puede contener espacios';
       }
 
       if (control.errors?.['pattern']) {
