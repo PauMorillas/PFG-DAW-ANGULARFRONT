@@ -23,7 +23,26 @@ export class ClienteForm implements OnInit {
 
   public guardarCliente() {
     // Llama al método del servicio para guardar el cliente
-    this.clienteService.save();
+    if (this.userForm.valid) {
+      this.clienteService.save(this.userForm.value).subscribe({
+        next: (success) => {
+          if (success) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Cliente guardado correctamente.'
+            });
+          }
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: `Error al guardar el cliente: ${error.message}`
+          });
+        }
+      });
+    }
   }
 
   // Al iniciar el componente, configura el formulario reactivo con Validators
