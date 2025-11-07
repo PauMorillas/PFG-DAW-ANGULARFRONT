@@ -9,7 +9,7 @@ export class ClienteService {
 
   constructor(private http: HttpClient) { }
     // Aquí irán los métodos para manejar clientes (CRUD)
-    private apiUrl: string = 'https://localhost:8081/api/clientes/registro';
+  private apiUrl: string = 'http://localhost:8081/api/clientes/registro';
 
     public save(cliente: Cliente): Observable<boolean> {
         // Lógica para guardar un cliente
