@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Cliente } from '../models/cliente.interface';
 import { Observable } from 'rxjs';
@@ -11,8 +11,14 @@ export class ClienteService {
     // Aquí irán los métodos para manejar clientes (CRUD)
   private apiUrl: string = 'http://localhost:8081/api/clientes/registro';
 
-    public save(cliente: Cliente): Observable<boolean> {
-        // Lógica para guardar un cliente
-        return this.http.post<boolean>(this.apiUrl, cliente);
-    }
+  public save(cliente: Cliente): Observable<any> {
+
+    // Devolvemos el body tal y como lo envía el backend (map con success/message)
+    return this.http.post<any>(this.apiUrl, cliente, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      })
+    });
+  }
 }

@@ -5,12 +5,13 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cliente-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule],
+  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule, ToastModule],
   templateUrl: './cliente-form.html',
   styleUrl: './cliente-form.css',
 })
@@ -25,21 +26,22 @@ export class ClienteForm implements OnInit {
     // Llama al método del servicio para guardar el cliente
     if (this.userForm.valid) {
       this.clienteService.save(this.userForm.value).subscribe({
-        next: (success) => {
-          if (success) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Éxito',
-              detail: 'Cliente guardado correctamente.'
-            });
+        next: (resp) => {
+          // Backend devuelve un map con success y message
+          if (resp && resp.success) {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: resp.message });
+            // opcional: reset del formulario
+            this.userForm.reset();
+          } else {
+            const msg = resp?.message || 'Error al guardar el cliente';
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
           }
         },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `Error al guardar el cliente: ${error.message}`
-          });
+        error: (err) => {
+          // err puede contener body con message
+          const serverMsg = err?.error?.message || err?.message || 'Error desconocido del servidor';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: serverMsg });
+          console.error('Error en guardarCliente:', err);
         }
       });
     }
@@ -50,24 +52,17 @@ export class ClienteForm implements OnInit {
     this.userForm = new FormGroup({
       nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
       email: new FormControl('ejemplo@gmail.com', [Validators.required, Validators.email]),
-      telf: new FormControl(''), // Campo 'telefono' no es requerido;
-      // Mínimo ocho caracteres, al menos una letra y un número
+      telf: new FormControl(''), // Campo 'telefono' no es requerido; 
       pass: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
         Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')
-      ])
+      ]) // Mínimo ocho caracteres, al menos una letra y un número
     });
   }
 
   onSubmit() {
     if (this.userForm.valid) {
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Éxito',
-        detail: 'Cliente guardado correctamente.'
-      });
-
       try {
         this.guardarCliente();
       } catch (e) {
