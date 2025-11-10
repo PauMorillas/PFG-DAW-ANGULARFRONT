@@ -20,7 +20,8 @@ export class ClienteForm implements OnInit {
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
   isIncorrectForm: boolean = false;
 
-  constructor(private clienteService: ClienteService, private messageService: MessageService) { }
+  constructor(private clienteService: ClienteService,
+     private messageService: MessageService) { }
 
   public guardarCliente() {
     // Llama al método del servicio para guardar el cliente
@@ -30,7 +31,7 @@ export class ClienteForm implements OnInit {
           // Backend devuelve un map con success y message
           if (resp && resp.success) {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: resp.message });
-            // opcional: reset del formulario
+            // reset del formulario
             this.userForm.reset();
           } else {
             const msg = resp?.message || 'Error al guardar el cliente';
@@ -52,7 +53,7 @@ export class ClienteForm implements OnInit {
     this.userForm = new FormGroup({
       nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
       email: new FormControl('ejemplo@gmail.com', [Validators.required, Validators.email]),
-      telf: new FormControl(''), // Campo 'telefono' no es requerido; 
+      telf: new FormControl(''), // Campo 'telefono' no es requerido. La validacion se hace en el backend
       pass: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
@@ -83,7 +84,7 @@ export class ClienteForm implements OnInit {
         detail: 'Revisa los campos obligatorios.'
       });
 
-      this.userForm.markAllAsTouched(); // Marca todos los campos como tocados para mostrar los errores
+      this.userForm.markAllAsTouched(); // Misma estrategia aquí
     }
   }
 
