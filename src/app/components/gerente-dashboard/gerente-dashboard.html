@@ -1,0 +1,22 @@
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <h2>Panel del Gerente</h2>
+  </div>
+  <div class="p-toolbar-group-right">
+    <button pButton icon="pi pi-user" label="Perfil" class="p-button-text"
+            (click)="editarPerfil()"></button>
+    <button pButton icon="pi pi-sign-out" label="Salir" class="p-button-danger p-button-text"
+            (click)="logout()"></button>
+  </div>
+</p-toolbar>
+
+<div class="dashboard-content">
+  <p-card header="Acciones rápidas" styleClass="dashboard-card">
+    <div class="p-grid">
+      <div class="p-col-12 p-md-6">
+        <button pButton label="Gestionar negocios" icon="pi pi-briefcase"
+                (click)="verNegocios()" class="p-button-success"></button>
+      </div>
+    </div>
+  </p-card>
+</div>

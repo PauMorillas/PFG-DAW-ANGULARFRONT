@@ -5,7 +5,11 @@
   "projects": {
     "PFG-DAW-ANGULARFRONT": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "path": "src/app/components"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -28,12 +32,7 @@
               "src/styles.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeflex/primeflex.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {

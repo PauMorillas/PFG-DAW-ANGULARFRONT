@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteService } from '../../services/cliente.service';
+import { UsuarioService } from '../../services/usuario.service';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,24 +9,24 @@ import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-cliente-form',
+  selector: 'app-usuario-form',
   standalone: true,
   imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule, ToastModule],
-  templateUrl: './cliente-form.html',
-  styleUrl: './cliente-form.css',
+  templateUrl: './usuario-form.html',
+  styleUrl: './usuario-form.css',
 })
 // Inyecta el servicio por constructor
-export class ClienteForm implements OnInit {
+export class UsuarioForm implements OnInit {
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
   isIncorrectForm: boolean = false;
 
-  constructor(private clienteService: ClienteService,
+  constructor(private usuarioService: UsuarioService,
      private messageService: MessageService) { }
 
-  public guardarCliente() {
-    // Llama al método del servicio para guardar el cliente
+  public guardarUsuario() {
+    // Llama al método del servicio para guardar el Usuario
     if (this.userForm.valid) {
-      this.clienteService.save(this.userForm.value).subscribe({
+      this.usuarioService.save(this.userForm.value).subscribe({
         next: (resp) => {
           // Backend devuelve un map con success y message
           if (resp && resp.success) {
@@ -34,7 +34,7 @@ export class ClienteForm implements OnInit {
             // reset del formulario
             this.userForm.reset();
           } else {
-            const msg = resp?.message || 'Error al guardar el cliente';
+            const msg = resp?.message || 'Error al guardar el Usuario';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
           }
         },
@@ -42,7 +42,7 @@ export class ClienteForm implements OnInit {
           // err puede contener body con message
           const serverMsg = err?.error?.message || err?.message || 'Error desconocido del servidor';
           this.messageService.add({ severity: 'error', summary: 'Error', detail: serverMsg });
-          console.error('Error en guardarCliente:', err);
+          console.error('Error en guardarUsuario:', err);
         }
       });
     }
@@ -65,12 +65,12 @@ export class ClienteForm implements OnInit {
   onSubmit() {
     if (this.userForm.valid) {
       try {
-        this.guardarCliente();
+        this.guardarUsuario();
       } catch (e) {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: `Hubo un problema al guardar el cliente: ${e}`
+          detail: `Hubo un problema al guardar el Usuario: ${e}`
         });
       }
       console.log('Datos enviados del formulario: ', this.userForm.value);
