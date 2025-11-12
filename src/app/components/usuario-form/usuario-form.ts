@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -17,16 +17,18 @@ import { CommonModule } from '@angular/common';
 })
 // Inyecta el servicio por constructor
 export class UsuarioForm implements OnInit {
+  @Input() rol: 'CLIENTE' | 'GERENTE' = 'CLIENTE'; // por defecto cliente
+  @Input() modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
-  isIncorrectForm: boolean = false;
+  constructor(
+      private usuarioService: UsuarioService,
+      private messageService: MessageService
+    ) {}
 
-  constructor(private usuarioService: UsuarioService,
-     private messageService: MessageService) { }
-
-  public guardarUsuario() {
+  public guardarUsuario(usuario?: any) {
     // Llama al método del servicio para guardar el Usuario
     if (this.userForm.valid) {
-      this.usuarioService.save(this.userForm.value).subscribe({
+      this.usuarioService.save(usuario).subscribe({
         next: (resp) => {
           // Backend devuelve un map con success y message
           if (resp && resp.success) {
@@ -64,8 +66,12 @@ export class UsuarioForm implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
+      const usuario = {
+        ...this.userForm.value,
+         rol: this.rol};
+
       try {
-        this.guardarUsuario();
+        this.guardarUsuario(usuario);
       } catch (e) {
         this.messageService.add({
           severity: 'error',
@@ -74,7 +80,6 @@ export class UsuarioForm implements OnInit {
         });
       }
       console.log('Datos enviados del formulario: ', this.userForm.value);
-
       // Marcar todos los campos como 'touched' para mostrar los errores
       this.userForm.markAllAsTouched();
     } else {
@@ -121,5 +126,17 @@ export class UsuarioForm implements OnInit {
 
     // En caso de otro error inesperado, mostrar un mensaje genérico 
     return 'Error de validación desconocido';
+  }
+
+  // Metodos para hacer dinámica la interfaz
+  get titulo(): string {
+    if (this.modo === 'EDICION') {
+      return this.rol === 'GERENTE' ? 'Editar perfil de Gerente' : 'Editar perfil de Cliente';
+    }
+    return this.rol === 'GERENTE' ? 'Registro de Gerente' : 'Registro de Cliente';
+  }
+
+  get textoBoton(): string {
+    return this.modo === 'EDICION' ? 'Guardar cambios' : 'Registrar';
   }
 }
