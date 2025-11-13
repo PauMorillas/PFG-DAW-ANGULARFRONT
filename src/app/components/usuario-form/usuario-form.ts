@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -7,9 +7,10 @@ import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-usuario-form',
+  selector: 'usuario-form',
   standalone: true,
   imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule, ToastModule],
   templateUrl: './usuario-form.html',
@@ -17,12 +18,13 @@ import { CommonModule } from '@angular/common';
 })
 // Inyecta el servicio por constructor
 export class UsuarioForm implements OnInit {
-  @Input() rol: 'CLIENTE' | 'GERENTE' = 'CLIENTE'; // por defecto cliente
-  @Input() modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
+  rol: 'CLIENTE' | 'GERENTE' = 'CLIENTE';
+  modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
   constructor(
       private usuarioService: UsuarioService,
-      private messageService: MessageService
+      private messageService: MessageService,
+      private route: ActivatedRoute
     ) {}
 
   public guardarUsuario(usuario?: any) {
@@ -52,16 +54,26 @@ export class UsuarioForm implements OnInit {
 
   // Al iniciar el componente, configura el formulario reactivo con Validators
   ngOnInit(): void {
+    this.rol = this.route.snapshot.data['rol'] || this.rol;
+    this.modo = this.route.snapshot.data['modo'] || this.modo;
+
     this.userForm = new FormGroup({
       nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
       email: new FormControl('ejemplo@gmail.com', [Validators.required, Validators.email]),
-      telf: new FormControl(''), // Campo 'telefono' no es requerido. La validacion se hace en el backend
       pass: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
         Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')
-      ]) // Mínimo ocho caracteres, al menos una letra y un número
+      ]), // Mínimo ocho caracteres, al menos una letra y un número
+      telf: this.rol === 'GERENTE'
+          ? new FormControl('', [Validators.required, Validators.pattern('^[0-9]{9}$')])
+          : new FormControl('') // opcional para clientes
     });
+
+    // TODO: si estás editando, cargar datos desde un servicio
+    /* if (this.modo === 'EDICION') {
+      this.loadUsuario();
+    } */
   }
 
   onSubmit() {
