@@ -12,7 +12,15 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'usuario-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule, ToastModule],
+  imports: [
+    ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    ButtonModule,
+    CardModule,
+    CommonModule,
+    ToastModule,
+  ],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.css',
 })
@@ -22,10 +30,10 @@ export class UsuarioForm implements OnInit {
   modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
   constructor(
-      private usuarioService: UsuarioService,
-      private messageService: MessageService,
-      private route: ActivatedRoute
-    ) {}
+    private usuarioService: UsuarioService,
+    private messageService: MessageService,
+    private route: ActivatedRoute
+  ) {}
 
   public guardarUsuario(usuario?: any) {
     // Llama al método del servicio para guardar el Usuario
@@ -34,9 +42,20 @@ export class UsuarioForm implements OnInit {
         next: (resp) => {
           // Backend devuelve un map con success y message
           if (resp && resp.success) {
-            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: resp.message });
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: resp.message,
+            });
             // reset del formulario
             this.userForm.reset();
+
+            if (window.parent) {
+              window.parent.postMessage(
+                { type: 'clienteData', data: usuario },
+                'http://localhost:8081'
+              ); // Reemplaza con el origen de tu app padre) // TODO: Reemplazar con el origen de la app de Spring o la padre
+            }
           } else {
             const msg = resp?.message || 'Error al guardar el Usuario';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
@@ -47,7 +66,9 @@ export class UsuarioForm implements OnInit {
           const serverMsg = err?.error?.message || err?.message || 'Error desconocido del servidor';
           this.messageService.add({ severity: 'error', summary: 'Error', detail: serverMsg });
           console.error('Error en guardarUsuario:', err);
-        }
+          // Avisar al padre de cancelación
+          window.parent?.postMessage({ type: 'cancel' }, 'http://localhost:8081');
+        },
       });
     }
   }
@@ -63,11 +84,12 @@ export class UsuarioForm implements OnInit {
       pass: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$')
+        Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$'),
       ]), // Mínimo ocho caracteres, al menos una letra y un número
-      telf: this.rol === 'GERENTE'
+      telf:
+        this.rol === 'GERENTE'
           ? new FormControl('', [Validators.required, Validators.pattern('^[0-9]{9}$')])
-          : new FormControl('') // opcional para clientes
+          : new FormControl(''), // opcional para clientes
     });
 
     // TODO: si estás editando, cargar datos desde un servicio
@@ -80,15 +102,17 @@ export class UsuarioForm implements OnInit {
     if (this.userForm.valid) {
       const usuario = {
         ...this.userForm.value,
-         rol: this.rol};
+        rol: this.rol,
+      };
 
       try {
         this.guardarUsuario(usuario);
+        this.userForm.markAllAsTouched();
       } catch (e) {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: `Hubo un problema al guardar el Usuario: ${e}`
+          detail: `Hubo un problema al guardar el Usuario: ${e}`,
         });
       }
       console.log('Datos enviados del formulario: ', this.userForm.value);
@@ -98,7 +122,7 @@ export class UsuarioForm implements OnInit {
       this.messageService.add({
         severity: 'error',
         summary: 'Error de validación',
-        detail: 'Revisa los campos obligatorios.'
+        detail: 'Revisa los campos obligatorios.',
       });
 
       this.userForm.markAllAsTouched(); // Misma estrategia aquí
@@ -136,7 +160,7 @@ export class UsuarioForm implements OnInit {
       }
     }
 
-    // En caso de otro error inesperado, mostrar un mensaje genérico 
+    // En caso de otro error inesperado, mostrar un mensaje genérico
     return 'Error de validación desconocido';
   }
 

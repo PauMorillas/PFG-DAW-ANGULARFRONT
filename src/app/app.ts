@@ -9,7 +9,7 @@ import { UsuarioForm } from './components/usuario-form/usuario-form';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm, GerenteDashboardComponent],
+  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
