@@ -29,6 +29,8 @@ export class UsuarioForm implements OnInit {
   rol: 'CLIENTE' | 'GERENTE' = 'CLIENTE';
   modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
+
+  private parentOrigin: string = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de tu app padre
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService,
@@ -40,21 +42,31 @@ export class UsuarioForm implements OnInit {
     if (this.userForm.valid) {
       this.usuarioService.save(usuario).subscribe({
         next: (resp) => {
-          // Backend devuelve un map con success y message
           if (resp && resp.success) {
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
               detail: resp.message,
             });
-            // reset del formulario
+
             this.userForm.reset();
 
+            // Envía datos al padre con ORIGIN REAL
             if (window.parent) {
-              window.parent.postMessage(
-                { type: 'clienteData', data: usuario },
-                'http://localhost:8081'
-              ); // Reemplaza con el origen de tu app padre) // TODO: Reemplazar con el origen de la app de Spring o la padre
+              try {
+                const payload = {
+                  nombreCliente: usuario.nombre || usuario.nombreCliente,
+                  correoElec: usuario.email || usuario.correoElec,
+                  telf: usuario.telf || usuario.telefono || '',
+                };
+                window.parent.postMessage(
+                  { type: 'clienteData', data: payload },
+                  "http://localhost:8081"
+                );
+              } catch (e) {
+                console.error('[ANGULAR] postMessage error, fallback *', e);
+                window.parent.postMessage({ type: 'clienteData', data: usuario }, '*');
+              }
             }
           } else {
             const msg = resp?.message || 'Error al guardar el Usuario';
@@ -62,12 +74,15 @@ export class UsuarioForm implements OnInit {
           }
         },
         error: (err) => {
-          // err puede contener body con message
           const serverMsg = err?.error?.message || err?.message || 'Error desconocido del servidor';
           this.messageService.add({ severity: 'error', summary: 'Error', detail: serverMsg });
+
           console.error('Error en guardarUsuario:', err);
-          // Avisar al padre de cancelación
-          window.parent?.postMessage({ type: 'cancel' }, 'http://localhost:8081');
+
+          // Enviar cancelación al padre
+          if (window.parent) {
+            window.parent.postMessage({ type: 'cancel' }, this.parentOrigin);
+          }
         },
       });
     }
@@ -75,8 +90,45 @@ export class UsuarioForm implements OnInit {
 
   // Al iniciar el componente, configura el formulario reactivo con Validators
   ngOnInit(): void {
-    this.rol = this.route.snapshot.data['rol'] || this.rol;
-    this.modo = this.route.snapshot.data['modo'] || this.modo;
+    console.log('[ANGULAR FORM] cargado');
+
+    // 1. Leer parentOrigin desde la URL (FORMA CORRECTA)
+    const params = new URLSearchParams(window.location.search);
+    const originParam = params.get('parentOrigin');
+
+    if (originParam) {
+      this.parentOrigin = originParam;
+    } else {
+      console.warn('[ANGULAR] No se recibió parentOrigin. Usando "*" (menos seguro)');
+      this.parentOrigin = '*';
+    }
+
+    console.log('[ANGULAR] parentOrigin = ', this.parentOrigin);
+
+    const o = params.get('parentOrigin');
+    if (o) {
+      this.parentOrigin = o;
+    } else {
+      // fallback SEGURO si no viene en URL
+      try {
+        this.parentOrigin = new URL(document.referrer).origin || this.parentOrigin;
+      } catch {
+        this.parentOrigin = 'http://localhost:8081';
+      }
+    }
+
+    console.log('[ANGULAR] parentOrigin = ', this.parentOrigin);
+
+    // (Opcional: leer preReservaData si te interesa)
+    const encodedData = params.get('preReservaData');
+    if (encodedData) {
+      try {
+        const preReserva = JSON.parse(decodeURIComponent(encodedData));
+        console.log('[ANGULAR] preReservaData = ', preReserva);
+      } catch (e) {
+        console.warn('preReservaData inválido', e);
+      }
+    }
 
     this.userForm = new FormGroup({
       nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
@@ -107,7 +159,7 @@ export class UsuarioForm implements OnInit {
 
       try {
         this.guardarUsuario(usuario);
-        this.userForm.markAllAsTouched();
+        // this.userForm.markAllAsTouched(); // Es necesario? TODO
       } catch (e) {
         this.messageService.add({
           severity: 'error',
