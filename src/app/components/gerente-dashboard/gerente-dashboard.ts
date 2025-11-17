@@ -33,4 +33,8 @@ export class GerenteDashboardComponent {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
+
+  index() {
+    this.router.navigate(['/gerente/dashboard']);
+  }
 }

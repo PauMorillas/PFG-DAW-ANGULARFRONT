@@ -46,28 +46,33 @@ export class UsuarioForm implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Éxito',
-              detail: resp.message,
+              detail: 'Usuario registrado correctamente, redirigiendo...',
             });
 
-            this.userForm.reset();
+            // Esperar un tiempo antes de resetear el formulario
+            setTimeout(() => {
+              this.userForm.reset();
 
-            // Envía datos al padre con ORIGIN REAL
-            if (window.parent) {
-              try {
-                const payload = {
-                  nombreCliente: usuario.nombre,
-                  correoElec: usuario.email,
-                  telf: usuario.telefono || '',
-                };
-                window.parent.postMessage(
-                  { type: 'clienteData', data: payload },
-                  this.parentOrigin
-                );
-              } catch (e) {
-                console.error('[ANGULAR] postMessage error, fallback *', e);
-                window.parent.postMessage({ type: 'clienteData', data: usuario }, this.parentOrigin);
+              // Envía datos al padre con ORIGIN REAL
+              if (window.parent) {
+                try {
+                  const payload = {
+                    nombreCliente: usuario.nombre,
+                    correoElec: usuario.email,
+                    telf: usuario.telefono || '',
+                  };
+                  window.parent.postMessage(
+                    { type: 'clienteData', data: payload },
+                    this.parentOrigin
+                  );
+                } catch (e) {
+                  window.parent.postMessage(
+                    { type: 'clienteData', data: usuario },
+                    this.parentOrigin
+                  );
+                }
               }
-            }
+            }, 1500); // 1.5 segundos para que se vea el toast
           } else {
             const msg = resp?.message || 'Error al guardar el Usuario';
             this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
@@ -84,12 +89,14 @@ export class UsuarioForm implements OnInit {
   }
 
   // Al iniciar el componente, configura el formulario reactivo con Validators y asegurar la url del origen del irame padre
- ngOnInit(): void {
-    console.log('[ANGULAR FORM] cargado');
-
-    // 1. Leer parentOrigin desde la URL (FORMA CORRECTA)
+  ngOnInit(): void {
+    // 1. Leer parentOrigin desde la URL
     const params = new URLSearchParams(window.location.search);
     const originParam = params.get('parentOrigin');
+    // Leer datos de la ruta
+    const routeData = this.route.snapshot.data;
+    this.rol = routeData['rol'] || 'CLIENTE';
+    this.modo = routeData['modo'] || 'REGISTRO';
 
     if (originParam) {
       this.parentOrigin = originParam;
@@ -99,7 +106,7 @@ export class UsuarioForm implements OnInit {
     if (o) {
       this.parentOrigin = o;
     } else {
-      // fallback SEGURO si no viene en URL
+      // Fallback seguro si no viene en URL
       try {
         this.parentOrigin = new URL(document.referrer).origin || this.parentOrigin;
       } catch {
@@ -109,7 +116,10 @@ export class UsuarioForm implements OnInit {
 
     this.userForm = new FormGroup({
       nombre: new FormControl('Manolito', Validators.required), // Campo 'nombre' es requerido
-      email: new FormControl('ejemplo@gmail.com', [Validators.required, Validators.email]),
+      email: new FormControl('morillashuertapau@gmail.com', [
+        Validators.required,
+        Validators.email,
+      ]),
       pass: new FormControl('', [
         Validators.required,
         Validators.minLength(8),
@@ -118,7 +128,7 @@ export class UsuarioForm implements OnInit {
       telf:
         this.rol === 'GERENTE'
           ? new FormControl('', [Validators.required, Validators.pattern('^[0-9]{9}$')])
-          : new FormControl(''), // opcional para clientes
+          : new FormControl(''), // será opcional para clientes
     });
   }
 
@@ -130,8 +140,7 @@ export class UsuarioForm implements OnInit {
       };
 
       try {
-        await this.guardarUsuario(usuario);
-        // this.userForm.markAllAsTouched(); // Es necesario? TODO
+        this.guardarUsuario(usuario);
       } catch (e) {
         this.messageService.add({
           severity: 'error',
@@ -181,6 +190,10 @@ export class UsuarioForm implements OnInit {
       if (control.errors?.['pattern']) {
         return 'La contraseña debe contener al menos una letra y un número';
       }
+    }
+
+    if (controlName === 'telf' && control.errors?.['pattern']) {
+      return 'El teléfono debe tener 9 dígitos';
     }
 
     // En caso de otro error inesperado, mostrar un mensaje genérico

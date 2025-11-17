@@ -9,7 +9,7 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
     // Aquí irán los métodos para manejar clientes (CRUD)
-  private apiUrl: string = 'http://localhost:8081/api';
+  private apiUrl: string = 'http://localhost:8081/api'; // TODO: CAMBIAR A URL DE PRODUCCION
 
   public save(usuario: Usuario): Observable<any> {
     // Determinamos el endpoint al que atacaremos segun el rol de usuario
