@@ -25,7 +25,7 @@ export class GerenteDashboardComponent {
   }
 
   verNegocios() {
-    this.router.navigate(['/gerente/negocios']);
+    this.router.navigate(['/dashboard/negocios']);
   }
 
   logout() {

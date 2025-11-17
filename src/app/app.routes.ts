@@ -2,11 +2,12 @@ import { Routes } from '@angular/router';
 import { provideRouter, RouterModule } from '@angular/router';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
 import { GerenteDashboardComponent } from './components/gerente-dashboard/gerente-dashboard';
+import { NegociosGerente } from './components/negocios-gerente/negocios-gerente';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
 
-  // Rutas para formulario
+  // ==== Rutas para formulario ====
   {
     path: 'registro-gerente',
     component: UsuarioForm,
@@ -23,8 +24,10 @@ export const routes: Routes = [
     data: { rol: 'GERENTE', modo: 'EDICION' },
   },
 
-  // Dashboard
+  // === Rutas para el Dashboard de Gerente ===
   { path: 'dashboard', component: GerenteDashboardComponent },
+
+  { path: 'dashboard/negocios', component: NegociosGerente },
 
   // Ruta fallback
   { path: '**', redirectTo: 'registro-gerente' },

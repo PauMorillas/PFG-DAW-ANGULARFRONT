@@ -1,0 +1,8 @@
+<h2>Negocios del gerente</h2>
+
+<div *ngFor="let negocio of negocios" class="card">
+  <h3>{{ negocio.nombre }}</h3>
+  <p>Email: {{ negocio.correoElec }}</p>
+  <p>Teléfono: {{ negocio.telfContacto }}</p>
+  <p>Horario: {{ negocio.horaApertura }} - {{ negocio.horaCierre }}</p>
+</div>
