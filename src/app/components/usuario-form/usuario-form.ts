@@ -55,17 +55,17 @@ export class UsuarioForm implements OnInit {
             if (window.parent) {
               try {
                 const payload = {
-                  nombreCliente: usuario.nombre || usuario.nombreCliente,
-                  correoElec: usuario.email || usuario.correoElec,
-                  telf: usuario.telf || usuario.telefono || '',
+                  nombreCliente: usuario.nombre,
+                  correoElec: usuario.email,
+                  telf: usuario.telefono || '',
                 };
                 window.parent.postMessage(
                   { type: 'clienteData', data: payload },
-                  "http://localhost:8081"
+                  this.parentOrigin
                 );
               } catch (e) {
                 console.error('[ANGULAR] postMessage error, fallback *', e);
-                window.parent.postMessage({ type: 'clienteData', data: usuario }, '*');
+                window.parent.postMessage({ type: 'clienteData', data: usuario }, this.parentOrigin);
               }
             }
           } else {
@@ -78,18 +78,13 @@ export class UsuarioForm implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: serverMsg });
 
           console.error('Error en guardarUsuario:', err);
-
-          // Enviar cancelación al padre
-          if (window.parent) {
-            window.parent.postMessage({ type: 'cancel' }, this.parentOrigin);
-          }
         },
       });
     }
   }
 
-  // Al iniciar el componente, configura el formulario reactivo con Validators
-  ngOnInit(): void {
+  // Al iniciar el componente, configura el formulario reactivo con Validators y asegurar la url del origen del irame padre
+ ngOnInit(): void {
     console.log('[ANGULAR FORM] cargado');
 
     // 1. Leer parentOrigin desde la URL (FORMA CORRECTA)
@@ -98,12 +93,7 @@ export class UsuarioForm implements OnInit {
 
     if (originParam) {
       this.parentOrigin = originParam;
-    } else {
-      console.warn('[ANGULAR] No se recibió parentOrigin. Usando "*" (menos seguro)');
-      this.parentOrigin = '*';
     }
-
-    console.log('[ANGULAR] parentOrigin = ', this.parentOrigin);
 
     const o = params.get('parentOrigin');
     if (o) {
@@ -113,20 +103,7 @@ export class UsuarioForm implements OnInit {
       try {
         this.parentOrigin = new URL(document.referrer).origin || this.parentOrigin;
       } catch {
-        this.parentOrigin = 'http://localhost:8081';
-      }
-    }
-
-    console.log('[ANGULAR] parentOrigin = ', this.parentOrigin);
-
-    // (Opcional: leer preReservaData si te interesa)
-    const encodedData = params.get('preReservaData');
-    if (encodedData) {
-      try {
-        const preReserva = JSON.parse(decodeURIComponent(encodedData));
-        console.log('[ANGULAR] preReservaData = ', preReserva);
-      } catch (e) {
-        console.warn('preReservaData inválido', e);
+        this.parentOrigin = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de tu app padre
       }
     }
 
@@ -143,14 +120,9 @@ export class UsuarioForm implements OnInit {
           ? new FormControl('', [Validators.required, Validators.pattern('^[0-9]{9}$')])
           : new FormControl(''), // opcional para clientes
     });
-
-    // TODO: si estás editando, cargar datos desde un servicio
-    /* if (this.modo === 'EDICION') {
-      this.loadUsuario();
-    } */
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.userForm.valid) {
       const usuario = {
         ...this.userForm.value,
@@ -158,7 +130,7 @@ export class UsuarioForm implements OnInit {
       };
 
       try {
-        this.guardarUsuario(usuario);
+        await this.guardarUsuario(usuario);
         // this.userForm.markAllAsTouched(); // Es necesario? TODO
       } catch (e) {
         this.messageService.add({
@@ -167,7 +139,6 @@ export class UsuarioForm implements OnInit {
           detail: `Hubo un problema al guardar el Usuario: ${e}`,
         });
       }
-      console.log('Datos enviados del formulario: ', this.userForm.value);
       // Marcar todos los campos como 'touched' para mostrar los errores
       this.userForm.markAllAsTouched();
     } else {
