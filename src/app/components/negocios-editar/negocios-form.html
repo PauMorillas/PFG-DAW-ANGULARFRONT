@@ -1,0 +1,77 @@
+<form (ngSubmit)="onSubmit()" #negocioForm="ngForm" class="p-fluid p-formgrid p-grid m-4">
+
+  <!-- Nombre -->
+  <div class="p-field p-col-12 mb-2">
+    <label for="nombre" class="mr-2">Nombre del negocio</label>
+    <input
+      id="nombre"
+      pInputText
+      type="text"
+      name="nombre"
+      [(ngModel)]="negocio.nombre"
+      required
+      placeholder="Nombre del negocio"
+    />
+  </div>
+
+  <!-- Correo electrónico -->
+  <div class="p-field p-col-12 mb-2">
+    <label for="correoElec" class="mr-2">Correo electrónico</label>
+    <input
+      id="correoElec"
+      pInputText
+      type="email"
+      name="correoElec"
+      [(ngModel)]="negocio.correoElec"
+      required
+      placeholder="Correo electrónico"
+    />
+  </div>
+
+  <!-- Teléfono -->
+  <div class="p-field p-col-12 mb-2">
+    <label for="telfContacto" class="mr-2">Teléfono de contacto</label>
+    <input
+      id="telfContacto"
+      pInputText
+      type="text"
+      name="telfContacto"
+      [(ngModel)]="negocio.telfContacto"
+      placeholder="Teléfono de contacto"
+    />
+  </div>
+
+  <!-- Hora apertura -->
+  <div class="p-field p-col-6 mb-2">
+    <label for="horaApertura" class="mr-2">Hora de apertura</label>
+    <input
+      id="horaApertura"
+      pInputText
+      type="time"
+      name="horaApertura"
+      [(ngModel)]="negocio.horaApertura"
+      required
+      placeholder="HH:mm"
+    />
+  </div>
+
+  <!-- Hora cierre -->
+  <div class="p-field p-col-6 mb-2">
+    <label for="horaCierre" class="mr-2">Hora de cierre</label>
+    <input
+      id="horaCierre"
+      pInputText
+      type="time"
+      name="horaCierre"
+      [(ngModel)]="negocio.horaCierre"
+      required
+      placeholder="HH:mm"
+    />
+  </div>
+
+  <!-- Botón guardar -->
+  <div class="p-field p-col-12">
+    <button pButton type="submit" label="Guardar" class="p-button-success"></button>
+  </div>
+
+</form>

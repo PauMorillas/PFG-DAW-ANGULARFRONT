@@ -24,7 +24,9 @@ export class NegociosGerente implements OnInit {
     private negocioService: NegocioService,
     private router: Router,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService) {}
+    private confirmationService: ConfirmationService
+  ) {}
+
   ngOnInit(): void {
     this.cargarNegocios();
   }
@@ -45,17 +47,23 @@ export class NegociosGerente implements OnInit {
     }
   }
 
-  goToNegocio(id: number, action: string) {
-    this.router.navigate([`/negocios/${id}/${action}`]);
+  goToNegocio(id?: number) {
+    if (id) {
+      // Si hay id => estamos editando un negocio existente
+      this.router.navigate([`/dashboard/negocios/${id}/editar`]);
+    } else {
+      // Si no hay id => queremos crear un negocio nuevo
+      this.router.navigate([`/dashboard/negocios/nuevo`]);
+    }
   }
 
-  deleteNegocio(id: number) {
+  deleteNegocio(id: number | undefined) {
     this.negocioService.deleteNegocio(id).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Éxito',
-          detail: 'Negocio eliminado correctamente'
+          detail: 'Negocio eliminado correctamente',
         });
 
         // Recargar la lista
@@ -65,13 +73,13 @@ export class NegociosGerente implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'No se pudo eliminar el negocio'
+          detail: 'No se pudo eliminar el negocio',
         });
-      }
+      },
     });
   }
 
-  confirmDelete(id: number) {
+  confirmDelete(id: number | undefined) {
     this.confirmationService.confirm({
       message: '¿Seguro que deseas eliminar este negocio?',
       header: 'Confirmación',
@@ -80,7 +88,7 @@ export class NegociosGerente implements OnInit {
       rejectLabel: 'No',
       accept: () => {
         this.deleteNegocio(id);
-      }
+      },
     });
   }
 }

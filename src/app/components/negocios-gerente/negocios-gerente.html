@@ -2,10 +2,10 @@
   <p-toast position="top-right"></p-toast>
   <p-confirmDialog></p-confirmDialog>
 </p-card>
-<h2 class="mb-4 text-center">Negocios del gerente</h2>
+<h1 class="m-4 text-center font-semibold text-2xl">Negocios del gerente</h1>
 
-<div class="p-grid p-mb-3">
-  <div *ngFor="let negocio of negocios" class="p-col-12 p-md-6 p-lg-4">
+<div class="p-grid p-mb-3 p-3">
+  <div *ngFor="let negocio of negocios" class="p-col-12 p-md-6 p-lg-4 mb-3">
     <p-card [header]="negocio.nombre">
       <div class="mb-2">
         <p><strong>Email:</strong> {{ negocio.correoElec }}</p>
@@ -18,7 +18,7 @@
           label="Editar"
           icon="pi pi-pencil"
           class="p-button-sm p-button-warning"
-          (click)="goToNegocio(negocio.id, 'editar')"
+          (click)="goToNegocio(negocio.id)"
         >
         </button>
 
@@ -27,7 +27,7 @@
           label="Servicios"
           icon="pi pi-list"
           class="p-button-sm p-button-info"
-          (click)="goToNegocio(negocio.id, 'servicios')"
+          (click)="goToNegocio(negocio.id)"
         >
         </button>
 
@@ -42,4 +42,5 @@
       </div>
     </p-card>
   </div>
+  <button pButton label="Nuevo negocio" icon="pi pi-plus" class="p-button-success mb-4" (click)="goToNegocio()"></button>
 </div>

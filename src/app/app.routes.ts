@@ -4,6 +4,7 @@ import { UsuarioForm } from './components/usuario-form/usuario-form';
 import { GerenteDashboardComponent } from './components/gerente-dashboard/gerente-dashboard';
 import { NegociosGerente } from './components/negocios-gerente/negocios-gerente';
 import { UsuarioLogin } from './components/user-login/user-login';
+import { NegociosForm } from './components/negocios-editar/negocios-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
@@ -36,7 +37,8 @@ export const routes: Routes = [
 
   { path: 'dashboard/negocios', component: NegociosGerente },
 
-  { path: 'dashboard/negocios/:id/:action', component: NegociosGerente },
+  { path: 'dashboard/negocios/:id/editar', component: NegociosForm },
+  { path: 'dashboard/negocios/nuevo', component: NegociosForm },        // Para crear
 
 
   // Ruta fallback
