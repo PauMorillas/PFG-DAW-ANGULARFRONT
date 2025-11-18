@@ -8,10 +8,18 @@ import { Negocio } from '../models/negocio.interface';
 })
 export class NegocioService {
 
-  private apiUrl = 'http://localhost:8081/api/gerentes'; // TODO: Cambiar a la url de Produccion
+  private apiUrl = 'http://localhost:8081/api'; // TODO: Cambiar a la url de Produccion
   constructor(private http: HttpClient) {}
 
   getNegociosByEmail(email: string): Observable<Negocio[]> {
-    return this.http.get<Negocio[]>(`${this.apiUrl}/${email}/negocios`);
+    return this.http.get<Negocio[]>(`${this.apiUrl}/gerentes/${email}/negocios`);
+  }
+
+  deleteNegocio(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/negocios/${id}`);
+  }
+
+  updateNegocio(id: number, negocio: Negocio): Observable<Negocio> {
+    return this.http.put<Negocio>(`${this.apiUrl}/negocios/${id}`, negocio);
   }
 }

@@ -1,16 +1,39 @@
-<p-card header="Iniciar Sesión">
-  <p-toast position="top-right"></p-toast>
-
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<p-card>
+    <p-toast position="top-right"></p-toast>
+</p-card>
+<p-card header="Iniciar Sesión" class="text-center max-w-30rem">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-column justify-content-center mt-3"
+  >
     <div class="field mb-3">
-      <input type="email" formControlName="email" pInputText placeholder="Correo" />
+      <input
+        type="email"
+        formControlName="email"
+        pInputText
+        placeholder="Correo"
+        [ngClass]="{
+          'ng-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched,
+          'w-15rem': true
+        }"
+      />
       <small class="p-error" *ngIf="getErrorMessage('email')">
         {{ getErrorMessage('email') }}
       </small>
     </div>
 
     <div class="field mb-3">
-      <input type="password" formControlName="password" pInputText placeholder="Contraseña" />
+      <input
+        type="password"
+        formControlName="password"
+        pInputText
+        placeholder="Contraseña"
+        [ngClass]="{
+          'ng-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched,
+          'w-15rem': true
+        }"
+      />
       <small class="p-error" *ngIf="getErrorMessage('password')">
         {{ getErrorMessage('password') }}
       </small>
