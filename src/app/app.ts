@@ -5,11 +5,11 @@ import { CardModule } from 'primeng/card';
 import { GerenteDashboardComponent } from './components/gerente-dashboard/gerente-dashboard';
 import { RouterOutlet } from '@angular/router';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
-
+import { UsuarioLogin } from './components/user-login/user-login';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm],
+  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm, UsuarioLogin],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })

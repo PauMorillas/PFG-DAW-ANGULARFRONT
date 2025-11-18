@@ -1,1 +1,23 @@
-<p>user-login works!</p>
+<p-card header="Iniciar Sesión">
+  <p-toast position="top-right"></p-toast>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="field mb-3">
+      <input type="email" formControlName="email" pInputText placeholder="Correo" />
+      <small class="p-error" *ngIf="getErrorMessage('email')">
+        {{ getErrorMessage('email') }}
+      </small>
+    </div>
+
+    <div class="field mb-3">
+      <input type="password" formControlName="password" pInputText placeholder="Contraseña" />
+      <small class="p-error" *ngIf="getErrorMessage('password')">
+        {{ getErrorMessage('password') }}
+      </small>
+    </div>
+
+    <div class="flex justify-content-center mt-3">
+      <button pButton type="submit" label="Entrar" [disabled]="loginForm.invalid"></button>
+    </div>
+  </form>
+</p-card>

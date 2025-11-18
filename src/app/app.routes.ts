@@ -3,6 +3,7 @@ import { provideRouter, RouterModule } from '@angular/router';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
 import { GerenteDashboardComponent } from './components/gerente-dashboard/gerente-dashboard';
 import { NegociosGerente } from './components/negocios-gerente/negocios-gerente';
+import { UsuarioLogin } from './components/user-login/user-login';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
@@ -22,6 +23,12 @@ export const routes: Routes = [
     path: 'editar-gerente',
     component: UsuarioForm,
     data: { rol: 'GERENTE', modo: 'EDICION' },
+  },
+
+  {
+    path: 'login-gerente',
+    component: UsuarioLogin,
+    data: { rol: 'GERENTE'},
   },
 
   // === Rutas para el Dashboard de Gerente ===

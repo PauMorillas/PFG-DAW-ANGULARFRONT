@@ -1,6 +1,4 @@
-/* cliente-form.css */
-
-/* 1. Corrección General de Texto: Asegura que el texto use el color de PrimeNG */
+/* Corrección General de Texto: Asegura que el texto use el color de PrimeNG */
 :host ::ng-deep {
     color: var(--text-color, #ffffff);
 }
@@ -34,15 +32,4 @@ legend {
     /* Borde del input en estado normal */
     border-color: var(--surface-border, #4b5563); 
     font-size: 1rem !important; 
-}
-
-
-/* 5. Mejora del mensaje de error (Ya tienes un p-error, pero reforzamos) */
-.p-error {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    /* PrimeNG usa --red-500 para errores. Lo forzamos. */
-    color: var(--red-500, #f87171) !important; 
 }
