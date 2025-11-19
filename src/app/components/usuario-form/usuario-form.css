@@ -33,3 +33,16 @@ legend {
     border-color: var(--surface-border, #4b5563); 
     font-size: 1rem !important; 
 }
+
+.p-error {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    /* PrimeNG usa --red-500 para errores. Lo forzamos. */
+    color: var(--red-500, #f87171) !important; 
+}
+
+input.ng-invalid.ng-touched {
+    border-color: var(--red-500, #f87171) !important;
+}
