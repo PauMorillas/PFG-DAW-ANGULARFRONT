@@ -1,0 +1,36 @@
+.p-error {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    /* PrimeNG usa --red-500 para errores. Lo forzamos. */
+    color: var(--red-500, #f87171) !important; 
+}
+
+input.ng-invalid.ng-touched {
+    border-color: var(--red-500, #f87171) !important;
+}
+
+/* Corrección General de Texto: Asegura que el texto use el color de PrimeNG */
+:host ::ng-deep {
+    color: var(--text-color, #ffffff);
+}
+
+label {
+    font-size: 1.1em;
+    font-weight: 600;
+    display: inline-block;
+    width: 11.875rem;
+    /* Usar el color del texto principal del tema */
+    color: var(--text-color, #ffffff); 
+    margin-bottom: 0.5rem;
+    /* Usar un color secundario para la línea de énfasis */
+    border-bottom: 1px solid var(--surface-border, #8693a6); 
+    line-height: 1.5;
+    margin-right: .625rem;
+}
+
+#telfContacto, #correoElec, #nombre{
+    display: inline-block;
+    width: calc(180px + 35px);
+}

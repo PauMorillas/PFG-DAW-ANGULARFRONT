@@ -2,23 +2,34 @@ import { Component } from '@angular/core';
 import { NegocioService } from '../../services/negocio.service';
 import { MessageService } from 'primeng/api';
 import { Negocio } from '../../models/negocio.interface';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { date } from '@primeuix/themes/aura/datepicker';
 import { ActivatedRoute } from '@angular/router';
-import { Card } from "primeng/card";
-import { Toast } from "primeng/toast";
+import { Card } from 'primeng/card';
+import { Toast } from 'primeng/toast';
 import { Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-negocios-form',
-  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DatePickerModule, Card, Toast],
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputTextModule,
+    ButtonModule,
+    DatePickerModule,
+    Card,
+    Toast,
+    ReactiveFormsModule,
+  ],
   templateUrl: './negocios-form.html',
   styleUrl: './negocios-form.css',
 })
 export class NegociosForm {
+  public negocioForm!: FormGroup;
   public negocio: Negocio = {
     id: 0,
     nombre: '',
@@ -45,25 +56,31 @@ export class NegociosForm {
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.prepareForm();
 
     if (id) {
       this.modoEdicion = true;
-      this.negocio.id = id;
 
       this.negocioService.getNegocioById(id).subscribe((data) => {
         this.negocio = data;
 
-        // Convertimos HH:mm -> Date picker
-        this.hApertura = this.parseHora(data.horaApertura);
-        this.hCierre = this.parseHora(data.horaCierre);
+        this.buildFormFromData(data);
       });
     }
   }
 
   onSubmit() {
-    // Convertimos Date → HH:mm
-    this.negocio.horaApertura = this.formatTime(this.hApertura);
-    this.negocio.horaCierre = this.formatTime(this.hCierre);
+    if (!this.negocioForm.valid) {
+      this.negocioForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error de validación',
+        detail: 'Revisa los campos obligatorios.',
+      });
+      return;
+    }
+
+    this.buildNegocio();
 
     if (this.modoEdicion) {
       this.updateNegocio();
@@ -126,5 +143,54 @@ export class NegociosForm {
     const d = new Date();
     d.setHours(h, m, 0);
     return d;
+  }
+
+  // === Helpers de Validaciones ===
+
+  getErrorMessage(controlName: string): string | null {
+    const control = this.negocioForm.get(controlName);
+    if (!control || !control.touched || control.valid) return null;
+
+    if (control.errors?.['required']) return 'Este campo es obligatorio';
+    if (controlName === 'correoElec' && control.errors?.['email']) return 'Correo inválido';
+    if (controlName === 'telfContacto' && control.errors?.['pattern'])
+      return 'Teléfono debe tener 9 dígitos';
+    return 'Error desconocido';
+  }
+
+  prepareForm() {
+    this.negocioForm = new FormGroup({
+      nombre: new FormControl('', Validators.required),
+      correoElec: new FormControl('', [Validators.required, Validators.email]),
+      telfContacto: new FormControl('', [Validators.pattern('^[0-9]{9}$'), Validators.required]),
+      hApertura: new FormControl(this.hApertura, Validators.required),
+      hCierre: new FormControl(this.hCierre, Validators.required),
+    });
+  }
+
+  buildFormFromData(data: Negocio) {
+    this.hApertura = this.parseHora(data.horaApertura);
+    this.hCierre = this.parseHora(data.horaCierre);
+
+    this.negocioForm.patchValue({
+      nombre: data.nombre,
+      correoElec: data.correoElec,
+      telfContacto: data.telfContacto,
+      hApertura: this.hApertura,
+      hCierre: this.hCierre,
+    });
+  }
+
+  buildNegocio() {
+    const formValues = this.negocioForm.value;
+    this.negocio = {
+      id: this.negocio?.id, // Se convierte a null en el service si no es una actualizacion
+      nombre: formValues.nombre,
+      correoElec: formValues.correoElec,
+      telfContacto: formValues.telfContacto,
+      horaApertura: this.formatTime(formValues.hApertura),
+      horaCierre: this.formatTime(formValues.hCierre),
+      correoGerente: '', // Se mapea en el service
+    };
   }
 }

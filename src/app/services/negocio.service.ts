@@ -40,7 +40,7 @@ export class NegocioService {
 
   createNegocio(negocio: Negocio): Observable<Negocio> {
     const correo = this.getCorreoFromSesion();
-    const payload = { ...negocio, correoGerente: correo, id: null}; // añadimos correoGerente
+    const payload = { ...negocio, correoGerente: correo, id: null}; // añadimos correoGerente y el id a null para spring
     return this.http.post<Negocio>(`${this.apiUrl}/negocios/create`, payload);
   }
 
