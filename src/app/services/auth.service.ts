@@ -17,11 +17,6 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('usuario');
-  }
-
-  getUsuario(): LoginResponse | null {
-    const data = localStorage.getItem('usuario');
-    return data ? JSON.parse(data) : null;
+    localStorage.removeItem('session');
   }
 }

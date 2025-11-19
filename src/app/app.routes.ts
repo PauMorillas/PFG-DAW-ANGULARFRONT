@@ -4,7 +4,7 @@ import { UsuarioForm } from './components/usuario-form/usuario-form';
 import { GerenteDashboardComponent } from './components/gerente-dashboard/gerente-dashboard';
 import { NegociosGerente } from './components/negocios-gerente/negocios-gerente';
 import { UsuarioLogin } from './components/user-login/user-login';
-import { NegociosForm } from './components/negocios-editar/negocios-form';
+import { NegociosForm } from './components/negocios-form/negocios-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
@@ -37,9 +37,9 @@ export const routes: Routes = [
 
   { path: 'dashboard/negocios', component: NegociosGerente },
 
+  // Angular evalua las rutas de arriba a abajo, por ello hay que poner la ruta mas específica(crear) arriba
+  { path: 'dashboard/negocios/crear', component: NegociosForm },
   { path: 'dashboard/negocios/:id/editar', component: NegociosForm },
-  { path: 'dashboard/negocios/nuevo', component: NegociosForm },        // Para crear
-
 
   // Ruta fallback
   { path: '**', redirectTo: 'registro-gerente' },

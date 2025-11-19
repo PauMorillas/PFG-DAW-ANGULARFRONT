@@ -1,5 +1,7 @@
+<p-card>
+  <p-toast position="top-right"></p-toast>
+</p-card>
 <form (ngSubmit)="onSubmit()" #negocioForm="ngForm" class="p-fluid p-formgrid p-grid m-4">
-
   <!-- Nombre -->
   <div class="p-field p-col-12 mb-2">
     <label for="nombre" class="mr-2">Nombre del negocio</label>
@@ -43,35 +45,18 @@
 
   <!-- Hora apertura -->
   <div class="p-field p-col-6 mb-2">
-    <label for="horaApertura" class="mr-2">Hora de apertura</label>
-    <input
-      id="horaApertura"
-      pInputText
-      type="time"
-      name="horaApertura"
-      [(ngModel)]="negocio.horaApertura"
-      required
-      placeholder="HH:mm"
-    />
+    <label for="hApertura" class="mr-2">Hora de apertura</label>
+    <p-datepicker name="hApertura" inputId="calendar-timeonly" [(ngModel)]="hApertura" [timeOnly]="true" [showIcon]="true" stepMinute="5"/>
   </div>
 
   <!-- Hora cierre -->
   <div class="p-field p-col-6 mb-2">
-    <label for="horaCierre" class="mr-2">Hora de cierre</label>
-    <input
-      id="horaCierre"
-      pInputText
-      type="time"
-      name="horaCierre"
-      [(ngModel)]="negocio.horaCierre"
-      required
-      placeholder="HH:mm"
-    />
+    <label for="hCierre" class="mr-2">Hora de cierre</label>
+        <p-datepicker name="hCierre" inputId="calendar-timeonly" [(ngModel)]="hCierre" [timeOnly]="true" [showIcon]="true" stepMinute="5"/>
   </div>
 
   <!-- Botón guardar -->
   <div class="p-field p-col-12">
-    <button pButton type="submit" label="Guardar" class="p-button-success"></button>
+    <button pButton type="submit" label="{{ modoEdicion ? 'Actualizar' : 'Crear' }}" class="p-button-success"></button>
   </div>
-
 </form>

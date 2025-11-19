@@ -47,13 +47,14 @@ export class NegociosGerente implements OnInit {
     }
   }
 
+  // === Handler para las rutas de actualizacion o creación ===
   goToNegocio(id?: number) {
     if (id) {
       // Si hay id => estamos editando un negocio existente
       this.router.navigate([`/dashboard/negocios/${id}/editar`]);
     } else {
       // Si no hay id => queremos crear un negocio nuevo
-      this.router.navigate([`/dashboard/negocios/nuevo`]);
+      this.router.navigate([`/dashboard/negocios/crear`]);
     }
   }
 
