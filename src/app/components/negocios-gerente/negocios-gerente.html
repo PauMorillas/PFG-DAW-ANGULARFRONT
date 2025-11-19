@@ -19,17 +19,15 @@
           icon="pi pi-pencil"
           class="p-button-sm p-button-warning"
           (click)="goToNegocio(negocio.id)"
-        >
-        </button>
+        ></button>
 
         <button
           pButton
           label="Servicios"
           icon="pi pi-list"
           class="p-button-sm p-button-info"
-          (click)="goToNegocio(negocio.id)"
-        >
-        </button>
+          (click)="goToServicios(negocio.id)"
+        ></button>
 
         <button
           pButton
@@ -37,10 +35,15 @@
           icon="pi pi-trash"
           class="p-button-sm p-button-danger"
           (click)="confirmDelete(negocio.id)"
-        >
-        </button>
+        ></button>
       </div>
     </p-card>
   </div>
-  <button pButton label="Nuevo negocio" icon="pi pi-plus" class="p-button-success mb-4" (click)="goToNegocio()"></button>
+  <button
+    pButton
+    label="Nuevo negocio"
+    icon="pi pi-plus"
+    class="p-button-success mb-4"
+    (click)="goToNegocio()"
+  ></button>
 </div>

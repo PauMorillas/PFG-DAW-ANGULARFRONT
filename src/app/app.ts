@@ -6,10 +6,12 @@ import { GerenteDashboardComponent } from './components/gerente-dashboard/gerent
 import { RouterOutlet } from '@angular/router';
 import { UsuarioForm } from './components/usuario-form/usuario-form';
 import { UsuarioLogin } from './components/user-login/user-login';
+import { TextareaModule } from 'primeng/textarea';
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm, UsuarioLogin],
+  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm, UsuarioLogin, TextareaModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })

@@ -58,6 +58,11 @@ export class NegociosGerente implements OnInit {
     }
   }
 
+  // === Handler para la ruta de servicios ===
+  goToServicios(id?: number) {
+    this.router.navigate([`/dashboard/negocios/${id}/servicios`]);
+  }
+
   deleteNegocio(id: number | undefined) {
     this.negocioService.deleteNegocio(id).subscribe({
       next: () => {

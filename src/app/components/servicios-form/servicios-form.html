@@ -1,0 +1,89 @@
+<p-card header="{{ modoEdicion ? 'Editar Servicio' : 'Crear Servicio' }}" class="max-w-40rem mx-auto">
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="p-fluid p-formgrid grid gap-3">
+
+    <!-- TITULO -->
+    <div class="field col-12 md:col-6 flex flex-column">
+      <label for="titulo">Título</label>
+      <input
+        pInputText
+        id="titulo"
+        formControlName="titulo"
+        placeholder="Ej: Corte de pelo"
+        [ngClass]="{ 'ng-invalid': getErrorMessage('titulo') }"
+      />
+      <small class="p-error" *ngIf="getErrorMessage('titulo')">
+        {{ getErrorMessage('titulo') }}
+      </small>
+    </div>
+
+    <!-- DURACIÓN EN MINUTOS -->
+    <div class="field col-12 md:col-6 flex flex-column">
+      <label for="duracionMinutos">Duración (minutos)</label>
+
+      <p-inputNumber
+        id="duracionMinutos"
+        formControlName="duracionMinutos"
+        placeholder="Ej: 45"
+        [min]="1"
+        [ngClass]="{ 'ng-invalid': getErrorMessage('duracionMinutos') }"
+        class="w-full"
+      >
+      </p-inputNumber>
+
+      <small class="p-error" *ngIf="getErrorMessage('duracionMinutos')">
+        {{ getErrorMessage('duracionMinutos') }}
+      </small>
+    </div>
+
+    <!-- DESCRIPCIÓN -->
+    <div class="field col-12 flex flex-column">
+      <label for="descripcion">Descripción</label>
+
+      <textarea
+      pTextarea
+        id="descripcion"
+        formControlName="descripcion"
+        rows="5"
+        cols="30"
+        [autoResize]="true"
+        placeholder="Describe el servicio…"
+        [ngClass]="{ 'ng-invalid': getErrorMessage('descripcion') }"
+      ></textarea>
+
+      <small class="p-error" *ngIf="getErrorMessage('descripcion')">
+        {{ getErrorMessage('descripcion') }}
+      </small>
+    </div>
+
+    <!-- UBICACIÓN -->
+    <div class="field col-12 flex flex-column">
+      <label for="ubicacion">Ubicación</label>
+
+      <input
+        pInputText
+        id="ubicacion"
+        formControlName="ubicacion"
+        placeholder="Ej: Mesa 4, Sala 1…"
+        [ngClass]="{ 'ng-invalid': getErrorMessage('ubicacion') }"
+      />
+
+      <small class="p-error" *ngIf="getErrorMessage('ubicacion')">
+        {{ getErrorMessage('ubicacion') }}
+      </small>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="col-12 flex justify-content-end gap-2 mt-3">
+      <button pButton type="button" label="Cancelar" class="p-button-secondary"
+        (click)="volver()"></button>
+
+      <button
+        pButton
+        label="Guardar"
+        type="submit"
+        class="p-button-success"
+        [disabled]="form.invalid"
+      ></button>
+    </div>
+  </form>
+</p-card>

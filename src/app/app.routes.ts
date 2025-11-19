@@ -5,6 +5,8 @@ import { GerenteDashboardComponent } from './components/gerente-dashboard/gerent
 import { NegociosGerente } from './components/negocios-gerente/negocios-gerente';
 import { UsuarioLogin } from './components/user-login/user-login';
 import { NegociosForm } from './components/negocios-form/negocios-form';
+import { ServiciosNegocio } from './components/servicios-negocio/servicios-negocio';
+import { ServiciosForm } from './components/servicios-form/servicios-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
@@ -29,7 +31,7 @@ export const routes: Routes = [
   {
     path: 'login-gerente',
     component: UsuarioLogin,
-    data: { rol: 'GERENTE'},
+    data: { rol: 'GERENTE' },
   },
 
   // === Rutas para el Dashboard de Gerente ===
@@ -40,6 +42,10 @@ export const routes: Routes = [
   // Angular evalua las rutas de arriba a abajo, por ello hay que poner la ruta mas específica(crear) arriba
   { path: 'dashboard/negocios/crear', component: NegociosForm },
   { path: 'dashboard/negocios/:id/editar', component: NegociosForm },
+  
+  { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio },
+  { path: 'dashboard/negocios/:id/servicios/crear', component: ServiciosForm },
+  { path: 'dashboard/negocios/:id/servicios/:idServicio/editar', component: ServiciosForm },
 
   // Ruta fallback
   { path: '**', redirectTo: 'registro-gerente' },
