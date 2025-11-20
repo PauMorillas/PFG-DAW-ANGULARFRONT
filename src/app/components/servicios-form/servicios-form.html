@@ -1,6 +1,8 @@
-<p-card header="{{ modoEdicion ? 'Editar Servicio' : 'Crear Servicio' }}" class="max-w-40rem mx-auto">
-  <form [formGroup]="form" (ngSubmit)="guardar()" class="p-fluid p-formgrid grid gap-3">
-
+<p-card
+  header="{{ modoEdicion ? 'Editar Servicio' : 'Crear Servicio' }}"
+  class="max-w-40rem mx-auto"
+>
+  <form [formGroup]="form" (ngSubmit)="guardarHandler()" class="p-fluid p-formgrid grid gap-3">
     <!-- TITULO -->
     <div class="field col-12 md:col-6 flex flex-column">
       <label for="titulo">Título</label>
@@ -25,6 +27,7 @@
         formControlName="duracionMinutos"
         placeholder="Ej: 45"
         [min]="1"
+        suffix=" min"
         [ngClass]="{ 'ng-invalid': getErrorMessage('duracionMinutos') }"
         class="w-full"
       >
@@ -35,12 +38,32 @@
       </small>
     </div>
 
+    <!-- COSTE -->
+    <div class="field col-12 md:col-6 flex flex-column">
+      <label for="coste">Coste (€)</label>
+
+      <p-inputNumber
+        id="coste"
+        formControlName="coste"
+        mode="currency"
+        currency="EUR"
+        [min]="0"
+        [step]="0.01"
+        [ngClass]="{ 'ng-invalid': getErrorMessage('coste') }"
+        class="w-full"
+      ></p-inputNumber>
+
+      <small class="p-error" *ngIf="getErrorMessage('coste')">
+        {{ getErrorMessage('coste') }}
+      </small>
+    </div>
+
     <!-- DESCRIPCIÓN -->
     <div class="field col-12 flex flex-column">
       <label for="descripcion">Descripción</label>
 
       <textarea
-      pTextarea
+        pTextarea
         id="descripcion"
         formControlName="descripcion"
         rows="5"
@@ -74,8 +97,13 @@
 
     <!-- BOTONES -->
     <div class="col-12 flex justify-content-end gap-2 mt-3">
-      <button pButton type="button" label="Cancelar" class="p-button-secondary"
-        (click)="volver()"></button>
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-secondary"
+        (click)="volver()"
+      ></button>
 
       <button
         pButton

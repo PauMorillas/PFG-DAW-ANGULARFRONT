@@ -12,7 +12,6 @@ export class ServicioService {
 
   constructor(private http: HttpClient) {}
 
-  // TODO: ESTA RUTA VA A FALLAR
   getServicioById(idServicio: number): Observable<Servicio> {
     return this.http.get<Servicio>(`${this.apiUrl}/${idServicio}`);
   }

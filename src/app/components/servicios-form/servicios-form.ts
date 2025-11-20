@@ -10,9 +10,8 @@ import { NegocioService } from '../../services/negocio.service';
 import { Servicio } from '../../models/servicio.interface';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ServicioService } from '../../services/servicio.service';
-import { Textarea } from "primeng/textarea";
+import { Textarea } from 'primeng/textarea';
 import { TextareaModule } from 'primeng/textarea';
-
 
 @Component({
   selector: 'app-servicio-form',
@@ -27,8 +26,8 @@ import { TextareaModule } from 'primeng/textarea';
     TextareaModule,
     ButtonModule,
     CardModule,
-    Textarea
-],
+    Textarea,
+  ],
 })
 export class ServiciosForm implements OnInit {
   form!: FormGroup;
@@ -50,12 +49,7 @@ export class ServiciosForm implements OnInit {
     this.idServicio = idServParam ? Number(idServParam) : null;
     this.modoEdicion = !!this.idServicio;
 
-    this.form = this.fb.group({
-      titulo: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      ubicacion: ['', Validators.required],
-      duracionMinutos: [0, [Validators.required, Validators.min(1)]],
-    });
+    this.prepareForm();
 
     if (this.modoEdicion) {
       this.cargarServicio();
@@ -65,18 +59,14 @@ export class ServiciosForm implements OnInit {
   cargarServicio() {
     this.servicioService.getServicioById(this.idServicio!).subscribe({
       next: (data: Servicio) => {
-        this.form.patchValue({
-          titulo: data.titulo,
-          descripcion: data.descripcion,
-          ubicacion: data.ubicacion,
-          duracionMinutos: data.duracionMinutos,
-        });
+        console.log(data);
+        this.buildFormFromData(data);
       },
       error: (err) => console.error('Error al cargar servicio', err),
     });
   }
 
-  guardar() {
+  guardarHandler() {
     if (this.form.invalid) return;
 
     const dto: Servicio = {
@@ -109,8 +99,28 @@ export class ServiciosForm implements OnInit {
     return 'Campo inválido';
   }
 
-  volver() {
-    throw new Error('Method not implemented.');
+  private prepareForm() {
+    this.form = this.fb.group({
+      titulo: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      ubicacion: ['', Validators.required],
+      duracionMinutos: [0, [Validators.required, Validators.min(1)]],
+      coste: [0, [Validators.required, Validators.min(0)]],
+    });
   }
 
+  private buildFormFromData(data: Servicio) {
+    this.form.patchValue({
+      titulo: data.titulo,
+      descripcion: data.descripcion,
+      ubicacion: data.ubicacion,
+      duracionMinutos: data.duracionMinutos,
+      coste: data.coste,
+    });
+  }
+
+  // === Navegación ===
+  volver() {
+    this.router.navigate([`/dashboard/negocios/${this.idNegocio}/servicios`]);
+  }
 }
