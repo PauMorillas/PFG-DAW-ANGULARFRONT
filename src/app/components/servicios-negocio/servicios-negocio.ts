@@ -7,15 +7,19 @@ import { Card } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { Negocio } from '../../models/negocio.interface';
 import { Servicio } from '../../models/servicio.interface';
+import { ServicioService } from '../../services/servicio.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Toast } from "primeng/toast";
 
 @Component({
   selector: 'app-servicios-negocio',
   standalone: true,
-  imports: [CommonModule, Card, ButtonModule, TableModule],
+  imports: [CommonModule, Card, ButtonModule, TableModule, ConfirmDialogModule, Toast],
   templateUrl: './servicios-negocio.html',
   styleUrls: ['./servicios-negocio.css'],
+  providers: [ConfirmationService],
 })
-
 export class ServiciosNegocio implements OnInit {
   idNegocio!: number;
   negocio!: Negocio;
@@ -24,7 +28,9 @@ export class ServiciosNegocio implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private negocioService: NegocioService
+    private negocioService: NegocioService,
+    private servicioService: ServicioService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -32,7 +38,7 @@ export class ServiciosNegocio implements OnInit {
     this.cargarNegocio();
   }
 
-  cargarNegocio() {
+  private cargarNegocio() {
     this.negocioService.getNegocioById(this.idNegocio).subscribe({
       next: (data) => {
         console.log(data);
@@ -53,8 +59,25 @@ export class ServiciosNegocio implements OnInit {
   }
 
   editarServicio(idServicio: number) {
-    this.router.navigate([
-      `/dashboard/negocios/${this.idNegocio}/servicios/${idServicio}/editar`,
-    ]);
+    this.router.navigate([`/dashboard/negocios/${this.idNegocio}/servicios/${idServicio}/editar`]);
+  }
+
+  borrarServicio(idServicio: number) {
+    this.servicioService.delete(idServicio).subscribe(() => {
+      this.cargarNegocio();
+    });
+  }
+
+  confirmDelete(id: number) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que deseas eliminar este servicio?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      accept: () => {
+        this.borrarServicio(id);
+      },
+    });
   }
 }

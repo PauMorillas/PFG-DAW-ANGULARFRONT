@@ -29,6 +29,6 @@ export class ServicioService {
   }
 
   delete(idServicio: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/borrar/${idServicio}`);
+    return this.http.delete(`${this.apiUrl}/${idServicio}`);
   }
 }

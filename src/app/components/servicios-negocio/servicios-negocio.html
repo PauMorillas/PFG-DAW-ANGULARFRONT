@@ -1,3 +1,7 @@
+<p-card>
+  <p-toast position="top-right"></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+</p-card>
 <p-card class="m-4">
   <h2 class="text-center">{{ negocio?.nombre }}</h2>
 
@@ -45,6 +49,15 @@
             icon="pi pi-pencil"
             class="p-button-sm p-button-warning"
             (click)="editarServicio(serv.id)"
+          ></button>
+        </td>
+
+        <td>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-sm p-button-danger"
+            (click)="confirmDelete(serv.id)"
           ></button>
         </td>
       </tr>

@@ -46,7 +46,6 @@ export const routes: Routes = [
   { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio },
   { path: 'dashboard/negocios/:id/servicios/crear', component: ServiciosForm },
   { path: 'dashboard/negocios/:id/servicios/:idServicio/editar', component: ServiciosForm },
-
   // Ruta fallback
   { path: '**', redirectTo: 'registro-gerente' },
 ];
