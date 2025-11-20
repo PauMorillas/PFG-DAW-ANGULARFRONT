@@ -59,7 +59,6 @@ export class ServiciosForm implements OnInit {
   cargarServicio() {
     this.servicioService.getServicioById(this.idServicio!).subscribe({
       next: (data: Servicio) => {
-        console.log(data);
         this.buildFormFromData(data);
       },
       error: (err) => console.error('Error al cargar servicio', err),
@@ -73,16 +72,16 @@ export class ServiciosForm implements OnInit {
       id: this.idServicio ?? null,
       negocioDTO: { id: this.idNegocio },
       listaReservasDTO: null,
-      fechaCreacion: new Date().toISOString(),
+      fechaCreacion: new Date().toISOString().slice(0, 19),
       ...this.form.value,
     };
 
     if (this.modoEdicion) {
-      this.servicioService.update(this.idNegocio, dto).subscribe(() => {
+      this.servicioService.update(this.idServicio!, dto).subscribe(() => {
         this.router.navigate([`/dashboard/negocios/${this.idNegocio}/servicios`]);
       });
     } else {
-      this.servicioService.create(this.idNegocio, dto).subscribe(() => {
+      this.servicioService.create(this.idServicio!, dto).subscribe(() => {
         this.router.navigate([`/dashboard/negocios/${this.idNegocio}/servicios`]);
       });
     }

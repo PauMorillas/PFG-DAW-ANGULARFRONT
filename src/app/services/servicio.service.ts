@@ -20,12 +20,12 @@ export class ServicioService {
     return this.http.get<Servicio[]>(`${this.apiUrl}/negocio/${idNegocio}`);
   }
 
-  create(idNegocio: number, servicio: Servicio): Observable<any> {
-    return this.http.post(`${this.apiUrl}/crear/${idNegocio}`, servicio);
+  create(idServicio: number, servicio: Servicio): Observable<any> {
+    return this.http.post(`${this.apiUrl}/crear/${idServicio}`, servicio);
   }
 
   update(idServicio: number, servicio: Servicio): Observable<any> {
-    return this.http.put(`${this.apiUrl}/editar/${idServicio}`, servicio);
+    return this.http.put(`${this.apiUrl}/${idServicio}`, servicio);
   }
 
   delete(idServicio: number): Observable<any> {
