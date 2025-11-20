@@ -25,7 +25,9 @@
       <p-inputNumber
         id="duracionMinutos"
         formControlName="duracionMinutos"
+        [showButtons]="true"
         placeholder="Ej: 45"
+        [step]="5.00"
         [min]="1"
         suffix=" min"
         [ngClass]="{ 'ng-invalid': getErrorMessage('duracionMinutos') }"
@@ -47,8 +49,9 @@
         formControlName="coste"
         mode="currency"
         currency="EUR"
+        [showButtons]="true"
+        [step]="5.00"
         [min]="0"
-        [step]="0.01"
         [ngClass]="{ 'ng-invalid': getErrorMessage('coste') }"
         class="w-full"
       ></p-inputNumber>

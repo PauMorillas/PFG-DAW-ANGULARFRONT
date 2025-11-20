@@ -21,7 +21,7 @@ export class ServicioService {
   }
 
   create(idServicio: number, servicio: Servicio): Observable<any> {
-    return this.http.post(`${this.apiUrl}/crear/${idServicio}`, servicio);
+    return this.http.post(`${this.apiUrl}/crear`, servicio);
   }
 
   update(idServicio: number, servicio: Servicio): Observable<any> {
