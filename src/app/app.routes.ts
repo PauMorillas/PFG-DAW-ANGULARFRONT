@@ -7,45 +7,33 @@ import { UsuarioLogin } from './components/user-login/user-login';
 import { NegociosForm } from './components/negocios-form/negocios-form';
 import { ServiciosNegocio } from './components/servicios-negocio/servicios-negocio';
 import { ServiciosForm } from './components/servicios-form/servicios-form';
+import { ReservasCalendar } from './components/reservas-calendar/reservas-calendar';
+import { App } from './app';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
+  // ==== Rutas para formularios ====
+  { path: 'registro-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'REGISTRO' } },
+  { path: 'registro-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'REGISTRO' } },
+  { path: 'editar-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'EDICION' } },
+  { path: 'login-gerente', component: UsuarioLogin, data: { rol: 'GERENTE' } },
 
-  // ==== Rutas para formulario ====
-  {
-    path: 'registro-gerente',
-    component: UsuarioForm,
-    data: { rol: 'GERENTE', modo: 'REGISTRO' },
-  },
-  {
-    path: 'registro-cliente',
-    component: UsuarioForm,
-    data: { rol: 'CLIENTE', modo: 'REGISTRO' },
-  },
-  {
-    path: 'editar-gerente',
-    component: UsuarioForm,
-    data: { rol: 'GERENTE', modo: 'EDICION' },
-  },
-
-  {
-    path: 'login-gerente',
-    component: UsuarioLogin,
-    data: { rol: 'GERENTE' },
-  },
-
-  // === Rutas para el Dashboard de Gerente ===
+  // === Dashboard ===
   { path: 'dashboard', component: GerenteDashboardComponent },
-
   { path: 'dashboard/negocios', component: NegociosGerente },
 
-  // Angular evalua las rutas de arriba a abajo, por ello hay que poner la ruta mas específica(crear) arriba
+  // === Rutas específicas de negocios y servicios (crear/editar primero) ===
   { path: 'dashboard/negocios/crear', component: NegociosForm },
   { path: 'dashboard/negocios/:id/editar', component: NegociosForm },
-  
-  { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio },
+
   { path: 'dashboard/negocios/:id/servicios/crear', component: ServiciosForm },
   { path: 'dashboard/negocios/:id/servicios/:idServicio/editar', component: ServiciosForm },
-  // Ruta fallback
+  { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio },
+
+  // === Rutas para reservas con flag de modo ===
+  { path: 'dashboard/reservas/negocio/:id', component: ReservasCalendar, data: { modo: 'negocio' } },
+  { path: 'dashboard/reservas/servicio/:id', component: ReservasCalendar, data: { modo: 'servicio' } },
+
+  // === Ruta fallback al final ===
   { path: '**', redirectTo: 'registro-gerente' },
 ];
