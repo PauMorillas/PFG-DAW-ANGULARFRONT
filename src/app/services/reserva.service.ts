@@ -12,7 +12,17 @@ export class ReservaService {
   constructor(private http: HttpClient) {}
 
   // Trae todos los eventos activos de un negocio
-  getEventosPorNegocio(idNegocio: number): Observable<EventoCalendario[]> {
+  getEventosPorNegocio(idNegocio?: number): Observable<EventoCalendario[]> {
+    if (idNegocio === undefined) {
+      throw new Error('No se proporcionó un ID de negocio válido');
+    }
     return this.http.get<EventoCalendario[]>(`${this.apiUrl}/eventos/negocio/${idNegocio}`);
+  }
+
+  getEventosPorServicio(idServicio: number) {
+    if (idServicio === undefined) {
+      throw new Error('No se proporcionó un ID de servicio válido');
+    }
+    return this.http.get<EventoCalendario[]>(`${this.apiUrl}/eventos/servicio/${idServicio}`);
   }
 }

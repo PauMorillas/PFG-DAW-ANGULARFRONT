@@ -29,7 +29,11 @@ import { Negocio } from '../../models/negocio.interface';
   providers: [MessageService, ConfirmationService],
 })
 export class ReservasCalendar implements OnInit {
+
   negocio?: Negocio;
+
+  idServicioSeleccionado: any;
+  
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     initialView: 'timeGridWeek',
@@ -48,6 +52,7 @@ export class ReservasCalendar implements OnInit {
     },
   };
 
+
   constructor(
     private negocioService: NegocioService,
     private reservaService: ReservaService
@@ -59,9 +64,10 @@ export class ReservasCalendar implements OnInit {
     this.cargarNegocio(2);
   }
 
-  // Orquesta para obtener negocio y configurar el calendario (es necesario este flujo para que se renderice el calendario)
+  // Orquesta para obtener negocio y configurar el calendario (es necesario este flujo para que se renderice el calendario con los eventos)
   private cargarNegocio(id: number) {
     this.negocioService.getNegocioById(id).subscribe((negocio) => {
+      console.log(negocio);
       this.negocio = negocio;
       this.configurarCalendario();
       this.cargarEventos(negocio.id!);
@@ -71,6 +77,7 @@ export class ReservasCalendar implements OnInit {
   /** Configura horarios y opciones base del calendario */
   private configurarCalendario() {
     if (!this.negocio) return;
+
     this.calendarOptions = {
       ...this.calendarOptions,
       slotMinTime: this.negocio.horaApertura ?? '00:00',
@@ -78,45 +85,46 @@ export class ReservasCalendar implements OnInit {
     };
   }
 
-  /** Carga eventos para todo el negocio */
-  cargarEventos(idNegocio: number) {
+  /** Carga todos los eventos para el negocio */
+  cargarEventos(idNegocio?: number) {
+    this.idServicioSeleccionado = null; // Se resetea el filtro
+
     this.reservaService.getEventosPorNegocio(idNegocio).subscribe({
       next: (eventos: EventoCalendario[]) => {
+         console.log(eventos);
         this.calendarOptions = {
           ...this.calendarOptions,
-          events: eventos.map((e) => ({
-            title: e.title,
-            start: e.start,
-            end: e.end,
-            color: e.color,
-            id: e.idReserva.toString(), // FullCalendar identifica cada evento con un id en String
-            idReserva: e.idReserva, // Mi referencia en BD numérica
-          })),
+          events: this.mapEventos(eventos),
         };
       },
       error: (err) => console.error('Error cargando eventos:', err),
     });
   }
 
-  /** Carga eventos filtrados por algún criterio (ej. solo un evento específico) */
-  cargarEventosFiltrados(idNegocio: number, idEvento: number) {
-    this.reservaService.getEventosPorNegocio(idNegocio).subscribe({
-      next: (eventos: EventoCalendario[]) => {
-        const filtrados = eventos.filter((e) => e.idReserva === idEvento);
+  /** Carga solo reservas de un servicio */
+  cargarEventosPorServicio(idServicio: number) {
+    this.idServicioSeleccionado = idServicio;
+    this.reservaService.getEventosPorServicio(idServicio).subscribe({
+      next: (eventos) => {
         this.calendarOptions = {
           ...this.calendarOptions,
-          events: filtrados.map((e) => ({
-            title: e.title,
-            start: e.start,
-            end: e.end,
-            color: e.color,
-            id: e.idReserva.toString(),
-            idReserva: e.idReserva,
-          })),
+          events: this.mapEventos(eventos),
         };
       },
-      error: (err) => console.error('Error cargando eventos filtrados:', err),
+      error: (err) => console.error("Error filtrando por servicio: ", err),
     });
+  }
+
+  /** Mapea eventos a formato FullCalendar EventInput */
+  private mapEventos(eventos: EventoCalendario[]) {
+    return eventos.map((e) => ({
+      title: e.title,
+      start: e.start,
+      end: e.end,
+      color: e.color,
+      id: e.idReserva.toString(), // Fullcalendar necesita string
+      idReserva: e.idReserva,     // Mi referencia numerica en la BD 
+    }));
   }
 
   handleDateClick(arg: any) {

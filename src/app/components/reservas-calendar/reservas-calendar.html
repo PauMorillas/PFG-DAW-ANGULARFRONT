@@ -1,3 +1,32 @@
-<p-card header="Calendario de Reservas de {{ negocio?.nombre }}" class="m-4">
+<p-card header="Calendario de Reservas de {{ negocio?.nombre }}" class="font-bold m-4">
   <full-calendar [options]="calendarOptions"></full-calendar>
+  <div class="servicios-container flex flex-column align-items-center min-w-full" *ngIf="negocio?.listaServiciosDTO?.length">
+
+  <h3 class="text-lg text-center font-semibold m-3">Filtrar por Servicio</h3>
+
+  <button
+    pButton
+    label="{{ idServicioSeleccionado === null ? 'Mostrando todos' : 'Mostrar todos' }}"
+    class="p-button-secondary mb-2 w-25rem min-w-10rem"
+    icon="pi pi-list"
+    [ngClass]="{ 'p-button-secondary': idServicioSeleccionado !== null, 'p-button-success': idServicioSeleccionado === null }"
+    (click)="cargarEventos(negocio?.id)">
+  </button>
+
+  <div class="servicios-list flex flex-column align-items-center min-w-full ">
+    <button
+      *ngFor="let s of negocio?.listaServiciosDTO"
+      pButton
+      icon="pi pi-eye"
+      class="p-button-info mb-2 w-25rem min-w-10rem"
+      [ngClass]="{
+          'p-button-info': idServicioSeleccionado !== s.id,
+          'p-button-success': idServicioSeleccionado === s.id
+        }"
+      [label]="s.titulo"
+      (click)="cargarEventosPorServicio(s.id!)">
+    </button>
+  </div>
+
+</div>
 </p-card>
