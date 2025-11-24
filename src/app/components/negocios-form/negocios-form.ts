@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NegocioService } from '../../services/negocio.service';
 import { MessageService } from 'primeng/api';
 import { Negocio } from '../../models/negocio.interface';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +13,8 @@ import { Card } from 'primeng/card';
 import { Toast } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+
 @Component({
   selector: 'app-negocios-form',
   imports: [
@@ -24,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     Card,
     Toast,
     ReactiveFormsModule,
+    CheckboxModule,
   ],
   templateUrl: './negocios-form.html',
   styleUrl: './negocios-form.css',
@@ -38,10 +41,22 @@ export class NegociosForm {
     horaApertura: '',
     horaCierre: '',
     correoGerente: '',
+    diasApertura: '',
   };
 
   hApertura: Date = new Date();
   hCierre: Date = new Date();
+
+  diasSemana = [
+    { nombre: 'Lunes', valor: 1 },
+    { nombre: 'Martes', valor: 2 },
+    { nombre: 'Miercoles', valor: 3 },
+    { nombre: 'Jueves', valor: 4 },
+    { nombre: 'Viernes', valor: 5 },
+    { nombre: 'Sabado', valor: 6 },
+    { nombre: 'Domingo', valor: 7 },
+  ];
+
   modoEdicion = false;
 
   constructor(
@@ -72,11 +87,7 @@ export class NegociosForm {
   onSubmit() {
     if (!this.negocioForm.valid) {
       this.negocioForm.markAllAsTouched();
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error de validación',
-        detail: 'Revisa los campos obligatorios.',
-      });
+      this.showErrorMessage('Error en el formulario, revisa los campos obligatorios');
       return;
     }
 
@@ -151,21 +162,47 @@ export class NegociosForm {
     const control = this.negocioForm.get(controlName);
     if (!control || !control.touched || control.valid) return null;
 
+    if (controlName === 'diasApertura' && control.errors?.['required'])
+      return 'Seleccione al menos un día de apertura';
     if (control.errors?.['required']) return 'Este campo es obligatorio';
     if (controlName === 'correoElec' && control.errors?.['email']) return 'Correo inválido';
     if (controlName === 'telfContacto' && control.errors?.['pattern'])
       return 'Teléfono debe tener 9 dígitos';
+
     return 'Error desconocido';
   }
 
-  prepareForm() {
-    this.negocioForm = new FormGroup({
-      nombre: new FormControl('', Validators.required),
-      correoElec: new FormControl('', [Validators.required, Validators.email]),
-      telfContacto: new FormControl('', [Validators.pattern('^[0-9]{9}$'), Validators.required]),
-      hApertura: new FormControl(this.hApertura, Validators.required),
-      hCierre: new FormControl(this.hCierre, Validators.required),
+  // Validador del grupo
+  horaAperturaAntesQueCierre(control: AbstractControl) {
+    const group = control as FormGroup;
+    const apertura = group.get('hApertura')?.value;
+    const cierre = group.get('hCierre')?.value;
+
+    if (!apertura || !cierre) return null;
+
+    return apertura >= cierre ? { horaInvalida: true } : null;
+  }
+
+  showErrorMessage(msg: String) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error de validación',
+      detail: `${msg}`,
     });
+  }
+
+  prepareForm() {
+    this.negocioForm = new FormGroup(
+      {
+        nombre: new FormControl('', Validators.required),
+        correoElec: new FormControl('', [Validators.required, Validators.email]),
+        telfContacto: new FormControl('', [Validators.pattern('^[0-9]{9}$'), Validators.required]),
+        hApertura: new FormControl(this.hApertura, Validators.required),
+        hCierre: new FormControl(this.hCierre, Validators.required),
+        diasApertura: new FormControl([], Validators.required),
+      },
+      { validators: this.horaAperturaAntesQueCierre } // <-- validador del grupo de horas de apertura
+    );
   }
 
   buildFormFromData(data: Negocio) {
@@ -178,6 +215,7 @@ export class NegociosForm {
       telfContacto: data.telfContacto,
       hApertura: this.hApertura,
       hCierre: this.hCierre,
+      diasApertura: data.diasApertura ? data.diasApertura.split(',').map((d) => Number(d)) : [],
     });
   }
 
@@ -191,6 +229,7 @@ export class NegociosForm {
       horaApertura: this.formatTime(formValues.hApertura),
       horaCierre: this.formatTime(formValues.hCierre),
       correoGerente: '', // Se mapea en el service
+      diasApertura: formValues.diasApertura.join(','), // Convierte array a string "1,2,3,4"
     };
   }
 }

@@ -7,21 +7,42 @@ import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MessageService } from 'primeng/api';
-import {ToastModule} from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
+import { ReservasCalendar } from '../reservas-calendar/reservas-calendar';
+import { NegociosGerente } from '../negocios-gerente/negocios-gerente';
+import { NegocioService } from '../../services/negocio.service';
+import { Negocio } from '../../models/negocio.interface';
 
 @Component({
   selector: 'app-gerente-dashboard',
-  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, ButtonModule, CardModule, CommonModule, ToolbarModule, ToastModule],
+  imports: [
+    ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    ButtonModule,
+    CardModule,
+    CommonModule,
+    ToolbarModule,
+    ToastModule,
+    ReservasCalendar,
+  ],
   templateUrl: './gerente-dashboard.html',
   styleUrls: ['./gerente-dashboard.css'],
   standalone: true,
 })
-
-export class GerenteDashboardComponent implements OnInit{
-
+export class GerenteDashboardComponent implements OnInit {
   session!: boolean;
 
-  constructor(private router: Router, private messageService: MessageService) {}
+  idNegocioSeleccionado?: number;
+
+  negocios?: Negocio[];
+
+  constructor(
+    private router: Router,
+    private messageService: MessageService,
+    private negocioService: NegocioService
+  ) {}
+
   ngOnInit(): void {
     if (!localStorage.getItem('session')) {
       this.session = false;
@@ -30,11 +51,29 @@ export class GerenteDashboardComponent implements OnInit{
         summary: 'Error',
         detail: 'Debes iniciar sesión',
         sticky: true,
-        key: 'sessionCheck'
-      })
+        key: 'sessionCheck',
+      });
     } else {
       this.session = true;
+      this.cargarNegociosDelGerente();
     }
+  }
+
+  cargarNegociosDelGerente() {
+    // Email
+    const session = localStorage.getItem('session');
+    const email = session ? JSON.parse(session).email : '';
+    this.negocioService.getNegociosByEmail(email).subscribe({
+    next: (negocios) => {
+      this.negocios = negocios;
+
+      // Seleccionamos automáticamente el primero si existe
+      if (negocios.length > 0) {
+        this.idNegocioSeleccionado = negocios[0].id;
+      }
+    },
+    error: (err) => console.error('Error cargando negocios del gerente', err)
+  });
   }
 
   // TODO métodos a implementar
@@ -44,6 +83,10 @@ export class GerenteDashboardComponent implements OnInit{
 
   verNegocios() {
     this.router.navigate(['/dashboard/negocios']);
+  }
+
+  seleccionarNegocio(id: number) {
+    this.idNegocioSeleccionado = id;
   }
 
   logout() {

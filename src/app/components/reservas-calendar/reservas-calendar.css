@@ -1,0 +1,4 @@
+/* Ajusta la altura de cada slot si quieres */
+:host ::ng-deep .fc-timegrid-slot {
+  height: 30px; /* cada bloque será más compacto */
+}

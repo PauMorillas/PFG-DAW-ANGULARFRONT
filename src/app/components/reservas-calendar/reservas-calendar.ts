@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // PrimeNG
 import { Card } from 'primeng/card';
@@ -28,12 +28,13 @@ import { Negocio } from '../../models/negocio.interface';
   styleUrls: ['./reservas-calendar.css'],
   providers: [MessageService, ConfirmationService],
 })
-export class ReservasCalendar implements OnInit {
-
+export class ReservasCalendar implements OnChanges {
   negocio?: Negocio;
 
+  @Input() idNegocio?: number;
+
   idServicioSeleccionado: any;
-  
+
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     initialView: 'timeGridWeek',
@@ -50,18 +51,17 @@ export class ReservasCalendar implements OnInit {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
+    slotDuration: '00:15:00',
   };
 
-
-  constructor(
-    private negocioService: NegocioService,
-    private reservaService: ReservaService
-  ) {}
+  constructor(private negocioService: NegocioService, private reservaService: ReservaService) {}
 
   // Flujo principal: datos → configuración → renderizado → actualización de eventos
-  
-  ngOnInit(): void {
-    this.cargarNegocio(2);
+
+  ngOnChanges(): void {
+    if (this.idNegocio) {
+      this.cargarNegocio(this.idNegocio); // Permite que el componente se actualice automáticamente cuando se selecciona un nuevo negocio desde el componente padre
+    }
   }
 
   // Orquesta para obtener negocio y configurar el calendario (es necesario este flujo para que se renderice el calendario con los eventos)
@@ -78,10 +78,37 @@ export class ReservasCalendar implements OnInit {
   private configurarCalendario() {
     if (!this.negocio) return;
 
+    let diasApertura = this.negocio.diasApertura
+      ? this.negocio.diasApertura.split(',').map((d) => parseInt(d, 10))
+      : [];
+
+    diasApertura = diasApertura.map((d) => (d === 7 ? 0 : d)); // Adaptamos días, si viene 7 (domingo, FullCalendar lo considera 0)
     this.calendarOptions = {
       ...this.calendarOptions,
       slotMinTime: this.negocio.horaApertura ?? '00:00',
       slotMaxTime: this.negocio.horaCierre ?? '00:00',
+      businessHours: {
+        daysOfWeek: diasApertura,
+        startTime: this.negocio.horaApertura ?? '00:00',
+        endTime: this.negocio.horaCierre ?? '00:00',
+      },
+      selectAllow: (selectInfo) => {
+        const day = selectInfo.start.getDay();
+        const hoy = new Date();
+
+        // Normalizamos la hora para comparar solo fechas (sin horas)
+        hoy.setHours(0, 0, 0, 0);
+        const fechaSeleccionada = new Date(selectInfo.start);
+        fechaSeleccionada.setHours(0, 0, 0, 0);
+
+        // 1️⃣ Bloquear días NO disponibles
+        if (!diasApertura.includes(day)) return false;
+
+        // 2️⃣ Bloquear fechas pasadas
+        if (fechaSeleccionada < hoy) return false;
+
+        return true;
+      },
     };
   }
 
@@ -91,7 +118,7 @@ export class ReservasCalendar implements OnInit {
 
     this.reservaService.getEventosPorNegocio(idNegocio).subscribe({
       next: (eventos: EventoCalendario[]) => {
-         console.log(eventos);
+        console.log(eventos);
         this.calendarOptions = {
           ...this.calendarOptions,
           events: this.mapEventos(eventos),
@@ -111,7 +138,7 @@ export class ReservasCalendar implements OnInit {
           events: this.mapEventos(eventos),
         };
       },
-      error: (err) => console.error("Error filtrando por servicio: ", err),
+      error: (err) => console.error('Error filtrando por servicio: ', err),
     });
   }
 
@@ -123,7 +150,7 @@ export class ReservasCalendar implements OnInit {
       end: e.end,
       color: e.color,
       id: e.idReserva.toString(), // Fullcalendar necesita string
-      idReserva: e.idReserva,     // Mi referencia numerica en la BD 
+      idReserva: e.idReserva, // Mi referencia numerica en la BD
     }));
   }
 

@@ -11,9 +11,6 @@ export class NegocioService {
   constructor(private http: HttpClient) {}
 
   // ==== CRUD de Negocios ====
-  getNegocios(): Observable<Negocio[]> {
-    return this.http.get<Negocio[]>(`${this.apiUrl}/negocios`);
-  }
 
   getNegociosByEmail(email: string): Observable<Negocio[]> {
     return this.http.get<Negocio[]>(`${this.apiUrl}/gerentes/${email}/negocios`);
