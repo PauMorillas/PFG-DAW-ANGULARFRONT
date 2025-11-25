@@ -1,3 +1,5 @@
+<app-gerente-toolbar *ngIf="isGerente()"></app-gerente-toolbar>
+
 <p-card header="Formulario de Usuario">
   <p-toast position="top-right"></p-toast>
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
@@ -99,4 +101,9 @@
       <p-button type="submit" [label]="textoBoton" [disabled]="userForm.invalid"></p-button>
     </div>
   </form>
+
+  <p (click)="redirectToLogIn()" class="text-color-secondary cursor-pointer">
+    ¿Ya tienes cuenta?
+    <a class="font-semibold underline">Inicia sesión</a>
+  </p>
 </p-card>

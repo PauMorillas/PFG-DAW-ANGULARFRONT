@@ -12,6 +12,7 @@ import { ReservasCalendar } from '../reservas-calendar/reservas-calendar';
 import { NegociosGerente } from '../negocios-gerente/negocios-gerente';
 import { NegocioService } from '../../services/negocio.service';
 import { Negocio } from '../../models/negocio.interface';
+import { GerenteToolbar } from "../gerente-toolbar/gerente-toolbar";
 
 @Component({
   selector: 'app-gerente-dashboard',
@@ -25,7 +26,8 @@ import { Negocio } from '../../models/negocio.interface';
     ToolbarModule,
     ToastModule,
     ReservasCalendar,
-  ],
+    GerenteToolbar
+],
   templateUrl: './gerente-dashboard.html',
   styleUrls: ['./gerente-dashboard.css'],
   standalone: true,

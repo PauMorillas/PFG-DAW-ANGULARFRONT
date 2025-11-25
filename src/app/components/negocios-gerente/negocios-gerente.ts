@@ -8,10 +8,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { GerenteToolbar } from "../gerente-toolbar/gerente-toolbar";
 
 @Component({
   selector: 'app-negocios-gerente',
-  imports: [CommonModule, Card, ToastModule, ButtonModule, ConfirmDialogModule],
+  imports: [CommonModule, Card, ToastModule, ButtonModule, ConfirmDialogModule, GerenteToolbar],
   templateUrl: './negocios-gerente.html',
   styleUrl: './negocios-gerente.css',
   standalone: true,

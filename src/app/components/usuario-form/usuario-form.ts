@@ -7,8 +7,9 @@ import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { GerenteToolbar } from '../gerente-toolbar/gerente-toolbar';
+import e from 'express';
 @Component({
   selector: 'usuario-form',
   standalone: true,
@@ -20,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
     CardModule,
     CommonModule,
     ToastModule,
+    GerenteToolbar,
   ],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.css',
@@ -34,10 +36,11 @@ export class UsuarioForm implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
-  public guardarUsuario(usuario?: any) {
+  private guardarUsuario(usuario?: any) {
     // Llama al método del servicio para guardar el Usuario
     if (this.userForm.valid) {
       this.usuarioService.save(usuario).subscribe({
@@ -90,6 +93,12 @@ export class UsuarioForm implements OnInit {
 
   // Al iniciar el componente, configura el formulario reactivo con Validators y asegurar la url del origen del irame padre
   ngOnInit(): void {
+    this.route.data.subscribe((data) => {
+      if (data['rol']) {
+        this.rol = data['rol'];
+      }
+    });
+
     // 1. Leer parentOrigin desde la URL
     const params = new URLSearchParams(window.location.search);
     const originParam = params.get('parentOrigin');
@@ -110,7 +119,7 @@ export class UsuarioForm implements OnInit {
       try {
         this.parentOrigin = new URL(document.referrer).origin || this.parentOrigin;
       } catch {
-        this.parentOrigin = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de tu app padre
+        this.parentOrigin = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de la app padre
       }
     }
 
@@ -210,5 +219,19 @@ export class UsuarioForm implements OnInit {
 
   get textoBoton(): string {
     return this.modo === 'EDICION' ? 'Guardar cambios' : 'Registrar';
+  }
+
+  isGerente(): boolean {
+    return this.rol === 'GERENTE';
+  }
+
+  redirectToLogIn() {
+    if (this.rol === 'GERENTE') {
+      this.router.navigate(['/login-gerente']);
+    } else if (this.rol === 'CLIENTE') {
+      this.router.navigate(['/login-cliente']);
+    } else {
+      throw new Error('Rol de usuario desconocido');
+    }
   }
 }

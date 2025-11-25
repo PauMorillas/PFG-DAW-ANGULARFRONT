@@ -43,4 +43,9 @@
       <button pButton type="submit" label="Entrar" [disabled]="loginForm.invalid"></button>
     </div>
   </form>
+
+  <p (click)="redirectToRegister()" class="text-color-secondary cursor-pointer mt-2">
+    ¿Aún no tienes cuenta?
+    <a class="font-semibold underline">Registrate aquí</a>
+  </p>
 </p-card>

@@ -14,6 +14,7 @@ import { Toast } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
+import { GerenteToolbar } from "../gerente-toolbar/gerente-toolbar";
 
 @Component({
   selector: 'app-negocios-form',
@@ -27,7 +28,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     Toast,
     ReactiveFormsModule,
     CheckboxModule,
-  ],
+    GerenteToolbar
+],
   templateUrl: './negocios-form.html',
   styleUrl: './negocios-form.css',
 })

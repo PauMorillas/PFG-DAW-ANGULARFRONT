@@ -79,10 +79,9 @@ export class ReservasCalendar implements OnChanges {
     if (!this.negocio) return;
 
     let diasApertura = this.negocio.diasApertura
-      ? this.negocio.diasApertura.split(',').map((d) => parseInt(d, 10))
-      : [];
-
-    diasApertura = diasApertura.map((d) => (d === 7 ? 0 : d)); // Adaptamos días, si viene 7 (domingo, FullCalendar lo considera 0)
+    ? this.negocio.diasApertura.split(',').map(d => parseInt(d, 10))
+    : [];
+    diasApertura = diasApertura.map(d => d === 7? 0: d); // Adaptamos días, si viene 7 (domingo, FullCalendar lo considera 0)
     this.calendarOptions = {
       ...this.calendarOptions,
       slotMinTime: this.negocio.horaApertura ?? '00:00',
@@ -93,21 +92,9 @@ export class ReservasCalendar implements OnChanges {
         endTime: this.negocio.horaCierre ?? '00:00',
       },
       selectAllow: (selectInfo) => {
-        const day = selectInfo.start.getDay();
-        const hoy = new Date();
-
-        // Normalizamos la hora para comparar solo fechas (sin horas)
-        hoy.setHours(0, 0, 0, 0);
-        const fechaSeleccionada = new Date(selectInfo.start);
-        fechaSeleccionada.setHours(0, 0, 0, 0);
-
-        // 1️⃣ Bloquear días NO disponibles
-        if (!diasApertura.includes(day)) return false;
-
-        // 2️⃣ Bloquear fechas pasadas
-        if (fechaSeleccionada < hoy) return false;
-
-        return true;
+        // selectInfo.start es un objeto Date
+        const day = selectInfo.start.getDay(); // 0=domingo, 1=lunes, ..., 6=sábado
+        return diasApertura.includes(day);
       },
     };
   }
@@ -149,8 +136,8 @@ export class ReservasCalendar implements OnChanges {
       start: e.start,
       end: e.end,
       color: e.color,
-      id: e.idReserva.toString(), // Fullcalendar necesita string
-      idReserva: e.idReserva, // Mi referencia numerica en la BD
+      id: e.id.toString(), // Fullcalendar necesita string
+      idReserva: e.id, // Mi referencia numerica en la BD
     }));
   }
 

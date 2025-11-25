@@ -16,7 +16,9 @@ export const routes: Routes = [
   { path: 'registro-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'REGISTRO' } },
   { path: 'registro-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'REGISTRO' } },
   { path: 'editar-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'EDICION' } },
+  { path: 'editar-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'EDICION' } },
   { path: 'login-gerente', component: UsuarioLogin, data: { rol: 'GERENTE' } },
+  { path: 'login-cliente', component: UsuarioLogin, data: { rol: 'CLIENTE' } },
 
   // === Dashboard ===
   { path: 'dashboard', component: GerenteDashboardComponent },

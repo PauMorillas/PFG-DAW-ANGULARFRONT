@@ -11,11 +11,12 @@ import { ServicioService } from '../../services/servicio.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Toast } from "primeng/toast";
+import { GerenteToolbar } from "../gerente-toolbar/gerente-toolbar";
 
 @Component({
   selector: 'app-servicios-negocio',
   standalone: true,
-  imports: [CommonModule, Card, ButtonModule, TableModule, ConfirmDialogModule, Toast],
+  imports: [CommonModule, Card, ButtonModule, TableModule, ConfirmDialogModule, Toast, GerenteToolbar],
   templateUrl: './servicios-negocio.html',
   styleUrls: ['./servicios-negocio.css'],
   providers: [ConfirmationService],
