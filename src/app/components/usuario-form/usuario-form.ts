@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GerenteToolbar } from '../gerente-toolbar/gerente-toolbar';
 import e from 'express';
+import { Usuario } from '../../models/usuario.interface';
 @Component({
   selector: 'usuario-form',
   standalone: true,
@@ -31,7 +32,7 @@ export class UsuarioForm implements OnInit {
   rol: 'CLIENTE' | 'GERENTE' = 'CLIENTE';
   modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
-
+  usuario!: Usuario;
   private parentOrigin: string = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de tu app padre
   constructor(
     private usuarioService: UsuarioService,
@@ -39,6 +40,29 @@ export class UsuarioForm implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  editarUsuario(usuario: any) {
+    if(this.userForm.valid) {
+      this.usuarioService.update(usuario).subscribe({
+        next: (resp) => {
+          if (resp && resp.success) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Éxito',
+              detail: 'Usuario editado correctamente',
+            });
+          } else {
+            const msg = resp?.message || 'Error al editar el Usuario';
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
+          }
+        },
+        error: (err) => {
+          const serverMsg = err?.error?.message || err?.message || 'Error desconocido del servidor';
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: serverMsg });
+        },
+      });
+    }
+  }
 
   private guardarUsuario(usuario?: any) {
     // Llama al método del servicio para guardar el Usuario
@@ -97,6 +121,10 @@ export class UsuarioForm implements OnInit {
       if (data['rol']) {
         this.rol = data['rol'];
       }
+
+      if (data['modo']) {
+        this.modo = data['modo'];
+      }
     });
 
     // 1. Leer parentOrigin desde la URL
@@ -143,13 +171,17 @@ export class UsuarioForm implements OnInit {
 
   async onSubmit() {
     if (this.userForm.valid) {
-      const usuario = {
+       this.usuario = {
         ...this.userForm.value,
         rol: this.rol,
       };
 
       try {
-        this.guardarUsuario(usuario);
+        if (this.modo === 'EDICION') {
+          this.editarUsuario(this.usuario);
+        } else if (this.modo === 'REGISTRO') {
+          this.guardarUsuario(this.usuario);
+        }
       } catch (e) {
         this.messageService.add({
           severity: 'error',

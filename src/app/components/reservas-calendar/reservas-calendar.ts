@@ -19,6 +19,7 @@ import { NegocioService } from '../../services/negocio.service';
 import { ReservaService } from '../../services/reserva.service';
 import { EventoCalendario } from '../../models/eventocalendario.interface';
 import { Negocio } from '../../models/negocio.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reservas-calendar',
@@ -54,7 +55,7 @@ export class ReservasCalendar implements OnChanges {
     slotDuration: '00:15:00',
   };
 
-  constructor(private negocioService: NegocioService, private reservaService: ReservaService) {}
+  constructor(private negocioService: NegocioService, private reservaService: ReservaService, private router: Router) {}
 
   // Flujo principal: datos → configuración → renderizado → actualización de eventos
 
@@ -146,6 +147,13 @@ export class ReservasCalendar implements OnChanges {
   }
 
   handleEventClick(arg: any) {
-    alert('Evento seleccionado: ' + arg.event.id);
+    const reservaId = arg.event.id;
+    if (reservaId) {
+      // Navegar a la ruta de detalle de la reserva
+      // Asumiendo que has configurado una ruta como '/reservas/detalle/:id'
+      this.router.navigate(['/reservas/detalle', reservaId]);
+    } else {
+      console.warn('El evento no tiene un ID de reserva asociado.');
+    }
   }
 }

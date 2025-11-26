@@ -25,8 +25,10 @@ export class UsuarioService {
   }
 
   public update(usuario: Usuario): Observable<any> {
-    const url = usuario.rol === 'GERENTE' ? `${this.apiUrl}/gerentes/${usuario.id}` : `${this.apiUrl}/clientes/${usuario.id}`;
-
+    const url = usuario.rol === 'GERENTE' 
+      ? `${this.apiUrl}/gerentes/editar` 
+      : `${this.apiUrl}/clientes/editar`;
+      
     return this.http.put<any>(url, usuario, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

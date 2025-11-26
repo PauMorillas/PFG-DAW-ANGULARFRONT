@@ -123,41 +123,38 @@ export class UsuarioLogin implements OnInit {
     } else if (this.rol === 'CLIENTE') {
       this.authService.loginCliente(credentials).subscribe({
         next: (resp: Usuario) => {
+          if (resp.rol === 'CLIENTE') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Login correcto',
+              detail: `Bienvenido ${resp.email}`,
+            });
+          }
           const session = {
             email: resp.email,
             rol: resp.rol,
             expiresAt: new Date().getTime() + 30 * 24 * 60 * 60 * 1000, // 30 días
           };
           localStorage.setItem('session', JSON.stringify(session));
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Login correcto',
-            detail: `Bienvenido ${resp.email}`,
-          });
-
-          // Envía datos al padre con ORIGIN REAL
-          if (window.parent) {
-            try {
-              const payload = {
-                nombreCliente: resp.nombre,
-                correoElec: resp.email,
-                telf: resp.telefono || '',
-              };
-              window.parent.postMessage(
-                { type: 'clienteData', data: payload },
-                this.parentOrigin
-              );
-            } catch (e) {
-              window.parent.postMessage(
-                { type: 'clienteData', data: resp },
-                this.parentOrigin
-              );
-            }
-          }
 
           setTimeout(() => {
-            this.router.navigate(['/dashboard']);
-          }, 1500); // 1 segundo y medio
+            // Envía datos al padre con ORIGIN REAL
+            if (window.parent) {
+              try {
+                const payload = {
+                  nombreCliente: resp.nombre,
+                  correoElec: resp.email,
+                  telf: resp.telefono || '',
+                };
+                window.parent.postMessage(
+                  { type: 'clienteData', data: payload },
+                  this.parentOrigin
+                );
+              } catch (e) {
+                window.parent.postMessage({ type: 'clienteData', data: resp }, this.parentOrigin);
+              }
+            }
+          }, 1250);
         },
         error: (err: any) => {
           this.messageService.add({
@@ -165,7 +162,7 @@ export class UsuarioLogin implements OnInit {
             summary: 'Error',
             detail: err?.error?.message || 'Credenciales incorrectas',
           });
-        }
+        },
       });
     }
   }

@@ -9,6 +9,7 @@ import { ServiciosNegocio } from './components/servicios-negocio/servicios-negoc
 import { ServiciosForm } from './components/servicios-form/servicios-form';
 import { ReservasCalendar } from './components/reservas-calendar/reservas-calendar';
 import { App } from './app';
+import { ReservaDetail } from './components/reserva-detail/reserva-detail';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
@@ -35,6 +36,8 @@ export const routes: Routes = [
   // === Rutas para reservas con flag de modo ===
   { path: 'dashboard/reservas/negocio/:id', component: ReservasCalendar, data: { modo: 'negocio' } },
   { path: 'dashboard/reservas/servicio/:id', component: ReservasCalendar, data: { modo: 'servicio' } },
+
+  { path: 'reservas/detalle/:id', component: ReservaDetail },
 
   // === Ruta fallback al final ===
   { path: '**', redirectTo: 'registro-gerente' },
