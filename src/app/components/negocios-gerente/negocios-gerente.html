@@ -1,0 +1,51 @@
+<app-gerente-toolbar></app-gerente-toolbar>
+
+<p-card>
+  <p-toast position="top-right"></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+</p-card>
+<h1 class="m-4 text-center font-semibold text-2xl">Negocios del gerente</h1>
+
+<div class="p-grid p-mb-3 p-3">
+  <div *ngFor="let negocio of negocios" class="p-col-12 p-md-6 p-lg-4 mb-3">
+    <p-card [header]="negocio.nombre">
+      <div class="mb-2">
+        <p><strong>Email:</strong> {{ negocio.correoElec }}</p>
+        <p><strong>Teléfono:</strong> {{ negocio.telfContacto }}</p>
+        <p><strong>Horario:</strong> {{ negocio.horaApertura }} - {{ negocio.horaCierre }}</p>
+      </div>
+      <div class="flex justify-content-between mt-3">
+        <button
+          pButton
+          label="Editar"
+          icon="pi pi-pencil"
+          class="p-button-sm p-button-warning"
+          (click)="goToNegocio(negocio.id)"
+        ></button>
+
+        <button
+          pButton
+          label="Servicios"
+          icon="pi pi-list"
+          class="p-button-sm p-button-info"
+          (click)="goToServicios(negocio.id)"
+        ></button>
+
+        <button
+          pButton
+          label="Borrar"
+          icon="pi pi-trash"
+          class="p-button-sm p-button-danger"
+          (click)="confirmDelete(negocio.id)"
+        ></button>
+      </div>
+    </p-card>
+  </div>
+  <button
+    pButton
+    label="Nuevo negocio"
+    icon="pi pi-plus"
+    class="p-button-success mb-4"
+    (click)="goToNegocio()"
+  ></button>
+</div>

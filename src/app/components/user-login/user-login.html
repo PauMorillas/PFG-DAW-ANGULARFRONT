@@ -1,0 +1,51 @@
+<p-card>
+    <p-toast position="top-right"></p-toast>
+</p-card>
+<p-card header="Iniciar Sesión" class="text-center max-w-30rem">
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-column justify-content-center mt-3"
+  >
+    <div class="field mb-3">
+      <input
+        type="email"
+        formControlName="email"
+        pInputText
+        placeholder="Correo"
+        [ngClass]="{
+          'ng-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched,
+          'w-15rem': true
+        }"
+      />
+      <small class="p-error" *ngIf="getErrorMessage('email')">
+        {{ getErrorMessage('email') }}
+      </small>
+    </div>
+
+    <div class="field mb-3">
+      <input
+        type="password"
+        formControlName="password"
+        pInputText
+        placeholder="Contraseña"
+        [ngClass]="{
+          'ng-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched,
+          'w-15rem': true
+        }"
+      />
+      <small class="p-error" *ngIf="getErrorMessage('password')">
+        {{ getErrorMessage('password') }}
+      </small>
+    </div>
+
+    <div class="flex justify-content-center mt-3">
+      <button pButton type="submit" label="Entrar" [disabled]="loginForm.invalid"></button>
+    </div>
+  </form>
+
+  <p (click)="redirectToRegister()" class="text-color-secondary cursor-pointer mt-2">
+    ¿Aún no tienes cuenta?
+    <a class="font-semibold underline">Registrate aquí</a>
+  </p>
+</p-card>

@@ -1,0 +1,120 @@
+<app-gerente-toolbar></app-gerente-toolbar>
+
+<p-card [header]="modoEdicion ? 'Editando Negocio: ' + negocio.nombre : 'Crear Negocio'">
+  <p-toast position="top-right"></p-toast>
+  <form [formGroup]="negocioForm" (ngSubmit)="onSubmit()" class="p-fluid p-formgrid p-grid m-4">
+    <!-- Nombre -->
+    <div class="p-field p-col-12 p-md-6 mb-2">
+      <label for="nombre">Nombre del negocio</label>
+      <input
+        id="nombre"
+        pInputText
+        type="text"
+        formControlName="nombre"
+        placeholder="Nombre del negocio"
+        [ngClass]="{
+          'ng-invalid': negocioForm.get('nombre')?.invalid && negocioForm.get('nombre')?.touched
+        }"
+      />
+      <small class="p-error" *ngIf="getErrorMessage('nombre') as errorMessage">{{
+        errorMessage
+      }}</small>
+    </div>
+
+    <!-- Correo electrónico -->
+    <div class="p-field p-col-12 p-md-6 mb-2">
+      <label for="correoElec">Correo electrónico</label>
+      <input
+        id="correoElec"
+        pInputText
+        type="email"
+        formControlName="correoElec"
+        placeholder="Correo electrónico"
+        [ngClass]="{
+          'ng-invalid':
+            negocioForm.get('correoElec')?.invalid && negocioForm.get('correoElec')?.touched
+        }"
+      />
+      <small class="p-error" *ngIf="getErrorMessage('correoElec') as errorMessage">{{
+        errorMessage
+      }}</small>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="p-field p-col-12 p-md-6 mb-2">
+      <label for="telfContacto">Teléfono de contacto</label>
+      <input
+        id="telfContacto"
+        pInputText
+        type="text"
+        formControlName="telfContacto"
+        placeholder="Teléfono de contacto"
+        [ngClass]="{
+          'ng-invalid':
+            negocioForm.get('telfContacto')?.invalid && negocioForm.get('telfContacto')?.touched
+        }"
+      />
+      <small class="p-error" *ngIf="getErrorMessage('telfContacto') as errorMessage">{{
+        errorMessage
+      }}</small>
+    </div>
+
+    <!-- Hora apertura -->
+    <div class="p-field p-col-12 p-md-3 mb-2">
+      <label for="hApertura">Hora de apertura</label>
+      <p-datepicker
+        name="hApertura"
+        inputId="hApertura"
+        formControlName="hApertura"
+        [timeOnly]="true"
+        [showIcon]="true"
+        stepMinute="5"
+      ></p-datepicker>
+      <small class="p-error" *ngIf="negocioForm.errors?.['horaInvalida']">
+        La hora de apertura no puede ser mayor o igual que la de cierre.
+      </small>
+    </div>
+
+    <!-- Hora cierre -->
+    <div class="p-field p-col-12 p-md-3 mb-2">
+      <label for="hCierre">Hora de cierre</label>
+      <p-datepicker
+        name="hCierre"
+        inputId="hCierre"
+        formControlName="hCierre"
+        [timeOnly]="true"
+        [showIcon]="true"
+        stepMinute="5"
+      ></p-datepicker>
+    </div>
+
+    <!-- Días de apertura -->
+    <div class="p-field p-col-12 mb-2">
+      <label>Días de apertura</label>
+      <div class="p-formgrid p-grid">
+        <div class="p-field-checkbox p-col-4" *ngFor="let dia of diasSemana">
+          <p-checkbox
+            [inputId]="'dia' + dia.valor"
+            [binary]="false"
+            [value]="dia.valor"
+            formControlName="diasApertura"
+          ></p-checkbox>
+          <label [for]="'dia' + dia.valor">{{ dia.nombre }}</label>
+        </div>
+      </div>
+      <small class="p-error" *ngIf="getErrorMessage('diasApertura') as errorMessage">{{
+        errorMessage
+      }}</small>
+    </div>
+
+    <!-- Botón guardar -->
+    <div class="p-field p-col-12 mt-3">
+      <button
+        pButton
+        type="submit"
+        label="{{ modoEdicion ? 'Actualizar' : 'Crear' }}"
+        class="p-button-success"
+      ></button>
+    </div>
+  </form>
+</p-card>

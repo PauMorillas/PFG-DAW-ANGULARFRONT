@@ -1,0 +1,51 @@
+<div *ngIf="!session" class="modal-backdrop">
+  <p-card
+    header="Atención"
+    class="flex flex-column align-items-center justify-content-center text-center"
+  >
+    <p class="mb-2">Debes iniciar sesión para acceder</p>
+    <div class="w-full flex justify-content-center mt-3">
+      <button pButton label="Aceptar" (click)="redirectToLogin()" class="p-button-success"></button>
+    </div>
+  </p-card>
+</div>
+
+<main *ngIf="session">
+  <app-gerente-toolbar></app-gerente-toolbar>
+
+  <div class="dashboard-content m-4">
+    <p-card header="Acciones rápidas" styleClass="dashboard-card">
+      <div class="p-grid">
+        <div class="p-col-12 p-md-6">
+          <button
+            pButton
+            label="Gestionar negocios"
+            icon="pi pi-briefcase"
+            (click)="verNegocios()"
+            class="p-button-success"
+          ></button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="m-4">
+  <h3>Selecciona un negocio</h3>
+
+  <button
+    *ngFor="let n of negocios"
+    pButton
+    class="p-button-info mr-2"
+    [label]="n.nombre"
+    (click)="seleccionarNegocio(n.id!)"
+  >
+  </button>
+</div>
+
+<app-reservas-calendar
+  *ngIf="idNegocioSeleccionado"
+  [idNegocio]="idNegocioSeleccionado"
+>
+</app-reservas-calendar>
+
+</main>

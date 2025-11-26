@@ -1,0 +1,17 @@
+<p-toolbar>
+  <div class="p-toolbar-group-left">
+    <h2 class="text-xl">Panel del Gerente</h2>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <button pButton icon="pi pi-home" label="Inicio" class="p-button-text"
+            (click)="goDashboard()"></button>
+
+    <button pButton icon="pi pi-user" label="Perfil" class="p-button-text"
+            (click)="goPerfil()"></button>
+
+
+    <button pButton icon="pi pi-sign-out" label="Salir" class="p-button-danger p-button-text"
+            (click)="logout()"></button>
+  </div>
+</p-toolbar>
