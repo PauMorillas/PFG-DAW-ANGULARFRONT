@@ -1,3 +1,4 @@
+import { Dominio } from './dominio.interface';
 import { Servicio } from './servicio.interface';
 
 export interface Negocio {
@@ -10,4 +11,5 @@ export interface Negocio {
   diasApertura: string;
   correoGerente: string; // email del gerente que viene de la sesión (para la lógica del backend)
   listaServiciosDTO?: Servicio[] | null; // será null hasta que se mapeen los servicios
+  listaDominiosDTO?: Dominio[] | null;
 }
