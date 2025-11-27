@@ -1,0 +1,16 @@
+<div class="m-4">
+  <h2>Script para negocio {{ idNegocio }}</h2>
+
+  <p>Copiar y pegar este script en tu sitio web:</p>
+
+  <pre class="p-m-2 p-p-2" style="background:#f5f5f5; border:1px solid #ccc;">
+    {{ script }}
+  </pre>
+
+  <button
+    pButton
+    label="Copiar al portapapeles"
+    icon="pi pi-copy"
+    (click)="copyScript()"
+  ></button>
+</div>
