@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -6,8 +10,11 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors, HttpInterceptor } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { authInterceptor } from './interceptors/auth-interceptor';
+import { inject } from '@angular/core';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,12 +25,14 @@ export const appConfig: ApplicationConfig = {
 
     provideAnimationsAsync(), // habilita animaciones
     providePrimeNG({
-      ripple: true, // permite efecto ripple en los componenetes 
+      ripple: true, // permite efecto ripple en los componenetes
       theme: {
         preset: Aura,
-      }
+      },
     }),
-    provideHttpClient(),
-    MessageService
-  ]
+    provideHttpClient(
+      withInterceptors([ authInterceptor ])
+    ),
+    MessageService,
+  ],
 };
