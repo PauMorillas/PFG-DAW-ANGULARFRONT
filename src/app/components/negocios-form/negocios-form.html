@@ -107,6 +107,22 @@
       }}</small>
     </div>
 
+    <!-- Dominios permitidos -->
+    <div class="p-field p-col-12 mb-2">
+      <label for="listaDominios">Dominios permitidos</label>
+      <input
+        id="listaDominios"
+        pInputText
+        type="text"
+        formControlName="listaDominios"
+        placeholder="Escribe dominios separados por comas"
+        (blur)="procesarDominios()"
+      />
+      <small class="p-error" *ngIf="negocioForm.get('listaDominios')?.errors?.['invalid']">
+        {{ negocioForm.get('listaDominios')?.errors?.['invalid'] }}
+      </small>
+    </div>
+
     <!-- Botón guardar -->
     <div class="p-field p-col-12 mt-3">
       <button

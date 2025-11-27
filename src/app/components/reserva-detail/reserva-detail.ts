@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Reserva } from '../../models/reserva.interface';
 import { ReservaService } from '../../services/reserva.service';
 import { ActivatedRoute } from '@angular/router';
 import { GerenteToolbar } from '../gerente-toolbar/gerente-toolbar';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // 1. Define el tipo de dato que PrimeNG espera para 'severity'
 // Usaremos 'null | undefined' para cubrir todos los tipos posibles aunque solo devolvamos strings.
@@ -16,10 +17,19 @@ type TagSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contr
 
 @Component({
   selector: 'app-reserva-detail',
-  imports: [CommonModule, CardModule, ToastModule, TagModule, GerenteToolbar, ButtonModule],
+  imports: [
+    CommonModule,
+    CardModule,
+    ToastModule,
+    TagModule,
+    GerenteToolbar,
+    ButtonModule,
+    ConfirmDialogModule,
+  ],
   templateUrl: './reserva-detail.html',
   standalone: true,
   styleUrl: './reserva-detail.css',
+  providers: [MessageService, ConfirmationService],
 })
 export class ReservaDetail implements OnInit {
   idReserva!: number;
@@ -28,7 +38,8 @@ export class ReservaDetail implements OnInit {
   constructor(
     private reservaService: ReservaService,
     private messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +68,24 @@ export class ReservaDetail implements OnInit {
     });
   }
 
-  cancelarReserva() {
+  // Función para mostrar diálogo de confirmación 
+  confirmCancel() {
+    let message = `¿Estás seguro de que deseas cancelar esta reserva? <br> Esta acción es irreversible, se avisará al cliente.`
+    this.confirmationService.confirm({
+      message: message,
+      header: 'Confirmación de cancelación',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sí',
+      rejectLabel: 'No',
+      closeOnEscape: true,
+      position: 'center',
+      accept: () => {
+        this.cancelarReserva(); // solo se llama si el usuario acepta
+      },
+    });
+  }
+
+  private cancelarReserva() {
     this.reservaService.cancelarReserva(this.idReserva).subscribe({
       next: (updatedReserva) => {
         this.reserva = updatedReserva;

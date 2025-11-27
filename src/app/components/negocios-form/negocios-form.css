@@ -30,7 +30,7 @@ label {
     margin-right: .625rem;
 }
 
-#telfContacto, #correoElec, #nombre{
+#telfContacto, #correoElec, #nombre, #listaDominios{
     display: inline-block;
     width: calc(180px + 35px);
 }

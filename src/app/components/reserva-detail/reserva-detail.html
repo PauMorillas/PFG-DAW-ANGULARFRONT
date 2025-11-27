@@ -1,6 +1,8 @@
 <app-gerente-toolbar></app-gerente-toolbar>
+
 <p-card [header]="'Detalles de la Reserva: ' + reserva?.id">
   <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
   <div *ngIf="reserva; else loading">
     <p><strong>Cliente:</strong> {{ reserva.clienteDTO.nombre }}</p>
     <p><strong>Email:</strong> {{ reserva.clienteDTO.email }}</p>
@@ -11,14 +13,16 @@
       <strong>Estado:</strong>
       <p-tag [value]="reserva.estado" [severity]="getSeverity(reserva.estado)"></p-tag>
     </p>
+
     <button
-    pButton
-    label="Cancelar Reserva"
-    class="p-button-danger mt-3"
-    (click)="cancelarReserva()"
-    *ngIf="reserva?.estado !== 'CANCELADA'"
-  ></button>
+      pButton
+      label="Cancelar Reserva"
+      class="p-button-danger mt-3"
+      *ngIf="reserva?.estado !== 'CANCELADA'"
+      (click)="confirmCancel()"
+    ></button>
   </div>
+
   <ng-template #loading>
     <p>Cargando detalles de la reserva...</p>
   </ng-template>
