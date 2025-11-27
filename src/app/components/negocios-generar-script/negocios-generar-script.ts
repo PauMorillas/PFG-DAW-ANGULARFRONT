@@ -9,6 +9,9 @@ import { environment } from '../../../environments/environment';
   styleUrl: './negocios-generar-script.css',
 })
 export class NegociosGenerarScript implements OnInit{
+copyScript() {
+throw new Error('Method not implemented.');
+}
   idNegocio!: number;
   script!: string;
   
