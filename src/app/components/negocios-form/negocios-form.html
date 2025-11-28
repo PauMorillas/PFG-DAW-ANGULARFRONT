@@ -89,22 +89,33 @@
     </div>
 
     <!-- Días de apertura -->
-    <div class="p-field p-col-12 mb-2">
-      <label>Días de apertura</label>
+    <div class="p-field p-col-12">
+      <label class="">Días de apertura</label>
+
       <div class="p-formgrid p-grid">
-        <div class="p-field-checkbox p-col-4" *ngFor="let dia of diasSemana">
+        <div
+          class="p-field-checkbox p-col-4 mb-2 pb-0 flex items-center align-items-center align-content-center"
+          aria-labelledby="dia"
+          *ngFor="let dia of diasSemana"
+        >
           <p-checkbox
             [inputId]="'dia' + dia.valor"
             [binary]="false"
             [value]="dia.valor"
             formControlName="diasApertura"
+            class="mr-2"
           ></p-checkbox>
-          <label [for]="'dia' + dia.valor">{{ dia.nombre }}</label>
+          <label
+            [for]="'dia' + dia.valor"
+            class="cursor-pointer min-w-4 max-w-2 w-fit font-italic border-0 m-0 p-0 text-lg"
+            >{{ dia.nombre }}</label
+          >
         </div>
       </div>
-      <small class="p-error" *ngIf="getErrorMessage('diasApertura') as errorMessage">{{
-        errorMessage
-      }}</small>
+
+      <small class="p-error" *ngIf="getErrorMessage('diasApertura') as errorMessage">
+        {{ errorMessage }}
+      </small>
     </div>
 
     <!-- Dominios permitidos -->
@@ -133,4 +144,12 @@
       ></button>
     </div>
   </form>
+
+  <button
+    pButton
+    label="Volver a la lista de negocios"
+    (click)="goToNegocios()"
+    class="p-button-secondary p-3 mt-3"
+    icon="pi pi-arrow-left"
+  ></button>
 </p-card>

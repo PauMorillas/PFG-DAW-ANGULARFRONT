@@ -64,8 +64,8 @@ export class NegociosGerente implements OnInit {
     this.router.navigate([`/dashboard/negocios/${id}/servicios`]);
   }
 
-  goToGenerarScript(arg0: number | undefined) {
-    throw new Error('Method not implemented.');
+  goToGenerarScript(id: number) {
+    this.router.navigate([`/dashboard/negocios/${id}/generar-script`]);
   }
 
   deleteNegocio(id: number | undefined) {
