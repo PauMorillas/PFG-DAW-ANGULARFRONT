@@ -307,4 +307,8 @@ export class NegociosForm {
       detail: `${msg}`,
     });
   }
+
+  goToNegocios() {
+    this.router.navigate(['/dashboard/negocios']);
+  }
 }

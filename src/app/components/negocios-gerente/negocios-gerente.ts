@@ -8,7 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { GerenteToolbar } from "../gerente-toolbar/gerente-toolbar";
+import { GerenteToolbar } from '../gerente-toolbar/gerente-toolbar';
 
 @Component({
   selector: 'app-negocios-gerente',
@@ -62,6 +62,10 @@ export class NegociosGerente implements OnInit {
   // === Handler para la ruta de servicios ===
   goToServicios(id?: number) {
     this.router.navigate([`/dashboard/negocios/${id}/servicios`]);
+  }
+
+  goToGenerarScript(id: number) {
+    this.router.navigate([`/dashboard/negocios/${id}/generar-script`]);
   }
 
   deleteNegocio(id: number | undefined) {

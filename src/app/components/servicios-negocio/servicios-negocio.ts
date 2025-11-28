@@ -81,4 +81,8 @@ export class ServiciosNegocio implements OnInit {
       },
     });
   }
+
+    goToNegocios() {
+    this.router.navigate(['/dashboard/negocios']);
+  }
 }

@@ -10,9 +10,10 @@ import { ServiciosForm } from './components/servicios-form/servicios-form';
 import { ReservasCalendar } from './components/reservas-calendar/reservas-calendar';
 import { App } from './app';
 import { ReservaDetail } from './components/reserva-detail/reserva-detail';
+import { NegociosGenerarScript } from './components/negocios-generar-script/negocios-generar-script';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'registro-gerente', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   // ==== Rutas para formularios ====
   { path: 'registro-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'REGISTRO' } },
   { path: 'registro-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'REGISTRO' } },
@@ -32,7 +33,7 @@ export const routes: Routes = [
   { path: 'dashboard/negocios/:id/servicios/crear', component: ServiciosForm },
   { path: 'dashboard/negocios/:id/servicios/:idServicio/editar', component: ServiciosForm },
   { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio },
-
+  { path: 'dashboard/negocios/:id/generar-script', component: NegociosGenerarScript},
   // === Rutas para reservas con flag de modo ===
   { path: 'dashboard/reservas/negocio/:id', component: ReservasCalendar, data: { modo: 'negocio' } },
   { path: 'dashboard/reservas/servicio/:id', component: ReservasCalendar, data: { modo: 'servicio' } },
@@ -40,5 +41,5 @@ export const routes: Routes = [
   { path: 'reservas/detalle/:id', component: ReservaDetail },
 
   // === Ruta fallback al final ===
-  { path: '**', redirectTo: 'registro-gerente' },
+  { path: '**', redirectTo: '/dashboard', pathMatch: 'full' },
 ];

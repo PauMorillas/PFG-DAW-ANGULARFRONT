@@ -1,0 +1,31 @@
+<app-gerente-toolbar></app-gerente-toolbar>
+<p-toast position="top-right"></p-toast>
+<div class="m-4">
+  <h2 class="text-white font-bold text-2xl underline mb-2">
+    Script para el negocio {{ negocio?.nombre }}
+  </h2>
+
+  <p class="text-lg mb-2">Copia y pegar este script en tu sitio web:</p>
+
+  <div class="flex flex-col md:flex-row items-center justify-center">
+    <code class="border-2 p-4 bg-gray-900 text-white rounded-lg text-sm max-w-full overflow-auto"
+      >{{ script }}
+    </code>
+
+    <button
+      pButton
+      help="Copiar al portapapeles"
+      (click)="copyScript()"
+      class="p-button-secondary px-5 border-left-none border-round-right-xl border-left-0 border-right-1"
+      icon="pi pi-copy"
+      ></button>
+  </div>
+
+  <button
+      pButton
+      label="Volver a la lista de negocios"
+      (click)="goToNegocios()"
+      class="p-button-secondary p-3 mt-3"
+      icon="pi pi-arrow-left"
+    ></button>
+</div>
