@@ -11,7 +11,7 @@ import { TextareaModule } from 'primeng/textarea';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule, CardModule, GerenteDashboardComponent, RouterOutlet, UsuarioForm, UsuarioLogin, TextareaModule],
+  imports: [ButtonModule, CardModule, RouterOutlet, TextareaModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
