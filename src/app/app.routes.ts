@@ -11,9 +11,10 @@ import { ReservasCalendar } from './components/reservas-calendar/reservas-calend
 import { App } from './app';
 import { ReservaDetail } from './components/reserva-detail/reserva-detail';
 import { NegociosGenerarScript } from './components/negocios-generar-script/negocios-generar-script';
+import { EmbedbookLanding } from './components/embedbook-landing/embedbook-landing';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', component: EmbedbookLanding },
   // ==== Rutas para formularios ====
   { path: 'registro-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'REGISTRO' } },
   { path: 'registro-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'REGISTRO' } },
@@ -41,5 +42,5 @@ export const routes: Routes = [
   { path: 'reservas/detalle/:id', component: ReservaDetail },
 
   // === Ruta fallback al final ===
-  { path: '**', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

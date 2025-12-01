@@ -1,0 +1,118 @@
+<div class="landing-container">
+  <section
+    class="hero surface-900 text-white flex flex-column align-items-center justify-content-center p-6"
+  >
+    <h1 class="text-5xl font-bold mb-3 text-black-alpha-90">
+      Gestiona tus reservas de forma automática
+    </h1>
+    <p class="text-lg text-center max-w-30rem mb-4 text-black-alpha-70">
+      Integración fácil, reservas inmediatas. EmbedBook permite a negocios gestionar su
+      disponibilidad y a sus clientes reservar desde cualquier web.
+    </p>
+    <div class="actions flex gap-3 mt-3">
+      <a routerLink="/dashboard">
+        <p-button
+          label="Soy Gerente – Ir al Panel"
+          class="p-button-rounded p-button-primary"
+          (onClick)="goToPanel()"
+        ></p-button>
+      </a>
+      <a routerLink="/login">
+        <p-button
+          label="Soy Cliente – Reservar"
+          class="p-button-rounded p-button-secondary"
+          (onClick)="goToCliente()"
+        ></p-button>
+      </a>
+    </div>
+  </section>
+
+  <section
+    class="what-is text-center p-6 surface-100 flex flex-column align-content-center align-items-center"
+  >
+    <h2 class="text-3xl font-semibold mb-3">¿Qué es EmbedBook?</h2>
+    <p class="max-w-30rem mx-auto mb-4">
+      Una plataforma SaaS para gestionar reservas, servicios y horarios. Copia/pega tu iFrame en
+      cualquier web y empieza a recibir citas de forma automática.
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+      <p-card class="surface-card shadow-2 border-round p-3">✔ IFrame Integrable</p-card>
+      <p-card class="surface-card shadow-2 border-round p-3">✔ Panel de Gestión</p-card>
+      <p-card class="surface-card shadow-2 border-round p-3">✔ Notificaciones</p-card>
+      <p-card class="surface-card shadow-2 border-round p-3">✔ Calendario en Tiempo Real</p-card>
+    </div>
+  </section>
+
+  <section class="managers p-6 text-center surface-50">
+    <h2 class="text-3xl font-semibold mb-3">Para Gerentes – Todo lo que necesitas</h2>
+    <p-carousel
+      [value]="managerFeatures"
+      [numVisible]="3"
+      [numScroll]="1"
+      [responsiveOptions]="carouselResponsiveOptions"
+    >
+      <ng-template let-feature pTemplate="item">
+        <p-card class="p-4 surface-card shadow-3 border-round ml-3">
+          {{ feature }}
+        </p-card>
+      </ng-template>
+    </p-carousel>
+  </section>
+
+  <section class="clients p-6 text-center surface-100">
+    <h2 class="text-3xl font-semibold mb-3">Para tus Clientes – Reservar nunca fue tan sencillo</h2>
+    <p-carousel
+      [value]="clientFeatures"
+      [numVisible]="3"
+      [numScroll]="1"
+      [responsiveOptions]="carouselResponsiveOptions"
+    >
+      <ng-template let-feature pTemplate="item">
+        <p-card class="p-4 surface-card shadow-3 border-round ml-3">
+          {{ feature }}
+        </p-card>
+      </ng-template>
+    </p-carousel>
+  </section>
+
+  <section class="flow p-6 text-center surface-50">
+    <h2 class="text-3xl font-semibold">¿Cómo funciona EmbedBook?</h2>
+    <ol class="text-lg list-decimal mx-auto max-w-20rem text-left mt-4">
+      <li>El gerente crea su cuenta</li>
+      <li>Configura servicios, horarios y disponibilidad</li>
+      <li>EmbedBook genera un enlace/iFrame único</li>
+      <li>Los clientes reservan en la web del negocio</li>
+    </ol>
+    <div class="flow-actions flex gap-3 justify-content-center mt-4">
+      <a
+        href="http://localhost:8081/public/demo"
+        class="btn-client p-button p-component p-button-outlined p-button-secondary"
+        >Ver ejemplo de iFrame</a
+      >
+      <a routerLink="/dashboard" class="btn-manager p-button p-component p-button-primary"
+        >Ir al Panel</a
+      >
+    </div>
+  </section>
+
+  <section class="tech p-6 text-center">
+    <h2 class="text-3xl font-semibold">Tecnologías y Garantías</h2>
+    <ul class="list-none mt-3 text-lg">
+      <li>Backend: Java 21 – Spring Boot – Spring Security</li>
+      <li>Frontend: Angular – FullCalendar – PrimeNG</li>
+      <li>BD: MySQL</li>
+      <li>Contenedores: Docker</li>
+      <li>Arquitectura en capas, modular, escalable y segura</li>
+    </ul>
+  </section>
+
+  <footer class="footer surface-900 text-black-alpha-60 p-4 text-center">
+    <div class="mb-2">EmbedBook © 2025 – Proyecto Fin Grado DAW</div>
+    <nav class="flex gap-3 justify-content-center">
+      <a routerLink="/dashboard" class="text-primary-300">Panel</a>
+      <a routerLink="/login-cliente" class="text-primary-300">Login Clientes</a>
+      <a href="#" class="text-primary-300">Docs API</a>
+      <a href="#" class="text-primary-300">Contacto</a>
+    </nav>
+  </footer>
+</div>
