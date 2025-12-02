@@ -10,3 +10,92 @@
 input.ng-invalid.ng-touched {
     border-color: var(--red-500, #f87171) !important;
 }
+
+/* Contenedor principal centrado */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-card {
+  padding: 2rem;
+  max-width: 30rem;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 12px;
+}
+
+/* Icono de bienvenida */
+.login-icon {
+  font-size: 3rem; 
+  color: #4caf50; /* verde de estilo primario */
+}
+
+/* Formulario centrado y inputs más grandes */
+.login-form input {
+  width: 100%;
+  max-width: 20rem;
+}
+
+/* Tema cliente: fondo claro */
+.cliente-theme {
+  background-color: #ffffff; /* blanco */
+  color: #000000; /* texto negro */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tema gerente: fondo oscuro */
+.gerente-theme {
+  background-color: #1f1f1f; /* gris oscuro */
+  color: #ffffff; /* texto blanco */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Ajuste de inputs en tema oscuro */
+.gerente-theme input {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+/* Ajuste de inputs en tema claro */
+.cliente-theme input {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ccc;
+}
+
+/* Botón grande adaptado a tema */
+.cliente-theme .p-button-lg {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.gerente-theme .p-button-lg {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+/* Texto del link en registro/login */
+.registro-link {
+  font-size: 0.95rem;
+}
+
+/* Cliente: gris oscuro sobre fondo blanco */
+.cliente-theme-text {
+  color: #333333; /* legible en modo claro */
+}
+
+/* Gerente: blanco sobre fondo oscuro */
+.gerente-theme-text {
+  color: #ffffff;
+}
+
+/* El <a> hereda el color del padre y sigue subrayado */
+.registro-link a {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: 600;
+}

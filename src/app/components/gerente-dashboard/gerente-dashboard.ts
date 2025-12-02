@@ -33,6 +33,7 @@ import { GerenteToolbar } from "../gerente-toolbar/gerente-toolbar";
   standalone: true,
 })
 export class GerenteDashboardComponent implements OnInit {
+
   session!: boolean;
 
   idNegocioSeleccionado?: number;
@@ -103,5 +104,16 @@ export class GerenteDashboardComponent implements OnInit {
 
   redirectToLogin() {
     this.router.navigate(['/login-gerente']);
+  }
+
+  // === Handler para las rutas de actualizacion o creación ===
+  goToNegocio(id?: number) {
+    if (id) {
+      // Si hay id => estamos editando un negocio existente
+      this.router.navigate([`/dashboard/negocios/${id}/editar`]);
+    } else {
+      // Si no hay id => queremos crear un negocio nuevo
+      this.router.navigate([`/dashboard/negocios/crear`]);
+    }
   }
 }

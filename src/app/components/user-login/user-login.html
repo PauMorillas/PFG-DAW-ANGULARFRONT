@@ -1,51 +1,75 @@
-<p-card>
-    <p-toast position="top-right"></p-toast>
-</p-card>
-<p-card header="Iniciar Sesión" class="text-center max-w-30rem">
-  <form
-    [formGroup]="loginForm"
-    (ngSubmit)="onSubmit()"
-    class="flex flex-column justify-content-center mt-3"
+<div class="login-container">
+  <p-toast position="top-right"></p-toast>
+
+  <p-card
+    class="login-card text-center"
+    [ngClass]="{ 'cliente-theme': rol === 'CLIENTE', 'gerente-theme': rol === 'GERENTE' }"
   >
-    <div class="field mb-3">
-      <input
-        type="email"
-        formControlName="email"
-        pInputText
-        placeholder="Correo"
-        [ngClass]="{
-          'ng-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched,
-          'w-15rem': true
-        }"
-      />
-      <small class="p-error" *ngIf="getErrorMessage('email')">
-        {{ getErrorMessage('email') }}
-      </small>
+    <!-- Encabezado con icono y mensaje de bienvenida -->
+    <div class="login-header flex flex-column align-items-center mb-4">
+      <i class="pi pi-user login-icon"></i>
+      <h2 class="mt-2">Bienvenido a EmbedBook</h2>
     </div>
 
-    <div class="field mb-3">
-      <input
-        type="password"
-        formControlName="password"
-        pInputText
-        placeholder="Contraseña"
-        [ngClass]="{
-          'ng-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched,
-          'w-15rem': true
-        }"
-      />
-      <small class="p-error" *ngIf="getErrorMessage('password')">
-        {{ getErrorMessage('password') }}
-      </small>
-    </div>
+    <!-- Formulario de inicio de sesión -->
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-column justify-content-center login-form"
+    >
+      <div class="field mb-3">
+        <input
+          type="email"
+          formControlName="email"
+          pInputText
+          placeholder="Correo"
+          [ngClass]="{
+            'ng-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched,
+            'w-20rem': true
+          }"
+        />
+        <small class="p-error" *ngIf="getErrorMessage('email')">
+          {{ getErrorMessage('email') }}
+        </small>
+      </div>
 
-    <div class="flex justify-content-center mt-3">
-      <button pButton type="submit" label="Entrar" [disabled]="loginForm.invalid"></button>
-    </div>
-  </form>
+      <div class="field mb-3">
+        <input
+          type="password"
+          formControlName="password"
+          pInputText
+          placeholder="Contraseña"
+          [ngClass]="{
+            'ng-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched,
+            'w-20rem': true
+          }"
+        />
+        <small class="p-error" *ngIf="getErrorMessage('password')">
+          {{ getErrorMessage('password') }}
+        </small>
+      </div>
 
-  <p (click)="redirectToRegister()" class="text-color-secondary cursor-pointer mt-2">
-    ¿Aún no tienes cuenta?
-    <a class="font-semibold underline">Registrate aquí</a>
-  </p>
-</p-card>
+      <div class="flex justify-content-center mt-3">
+        <button
+          pButton
+          type="submit"
+          label="Entrar"
+          [disabled]="loginForm.invalid"
+          class="p-button-lg"
+        ></button>
+      </div>
+    </form>
+
+    <p
+      (click)="redirectToRegister()"
+      class="cursor-pointer mt-3 registro-link"
+      [ngClass]="{
+        'cliente-theme-text': rol === 'CLIENTE',
+        'gerente-theme-text': rol === 'GERENTE'
+      }"
+    >
+      ¿Aún no tienes cuenta?
+      <a class="font-semibold underline">Regístrate aquí</a>
+    </p>
+  </p-card>
+</div>

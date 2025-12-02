@@ -1,3 +1,4 @@
+<!-- Avisos para el Gerente-->
 <div *ngIf="!session" class="modal-backdrop">
   <p-card
     header="Atención"
@@ -13,39 +14,59 @@
 <main *ngIf="session">
   <app-gerente-toolbar></app-gerente-toolbar>
 
-  <div class="dashboard-content m-4">
-    <p-card header="Acciones rápidas" styleClass="dashboard-card">
-      <div class="p-grid">
-        <div class="p-col-12 p-md-6">
-          <button
-            pButton
-            label="Gestionar negocios"
-            icon="pi pi-briefcase"
-            (click)="verNegocios()"
-            class="p-button-success"
-          ></button>
-        </div>
+  <div class="dashboard-container flex flex-wrap gap-4 justify-center m-4">
+    <!-- Acciones rápidas -->
+    <p-card header="Acciones rápidas" class="dashboard-card flex-shrink-0">
+      <div class="flex gap-2 flex-wrap">
+        <button
+          pButton
+          label="Gestionar negocios"
+          icon="pi pi-briefcase"
+          (click)="verNegocios()"
+          class="p-button-success btn-acc-rapidas"
+        ></button>
+
+        <button
+          pButton
+          label="Nuevo negocio"
+          icon="pi pi-plus"
+          class="p-button-success btn-acc-rapidas"
+          (click)="goToNegocio()"
+        ></button>
+      </div>
+    </p-card>
+
+    <!-- Selección de negocio -->
+    <p-card class="dashboard-card flex-shrink-0 flex flex-column">
+      <h3 *ngIf="negocios && negocios.length !== 0" class="mb-2">Selecciona un negocio</h3>
+
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button
+          *ngFor="let n of negocios"
+          pButton
+          class="negocio-btn p-2 max-w-fit"
+          [ngClass]="{'p-button-info': idNegocioSeleccionado !== n.id, 'p-button-success': idNegocioSeleccionado === n.id}"
+          [label]="n.nombre"
+          (click)="seleccionarNegocio(n.id!)"
+        ></button>
       </div>
     </p-card>
   </div>
 
-  <div class="m-4">
-  <h3>Selecciona un negocio</h3>
+  <!-- Aviso cuando no hay negocios -->
+  <p-card *ngIf="negocios && negocios.length === 0" class="m-4 text-center">
+    <h3 class="mb-2">Aún no tienes negocios</h3>
+    <p>Aquí aparecerá tu calendario una vez crees tu primer negocio.</p>
 
-  <button
-    *ngFor="let n of negocios"
-    pButton
-    class="p-button-info mr-2"
-    [label]="n.nombre"
-    (click)="seleccionarNegocio(n.id!)"
-  >
-  </button>
-</div>
+    <button
+      pButton
+      icon="pi pi-plus"
+      label="Crear un negocio"
+      class="p-button-success mt-3"
+      (click)="goToNegocio()"
+    ></button>
+  </p-card>
 
-<app-reservas-calendar
-  *ngIf="idNegocioSeleccionado"
-  [idNegocio]="idNegocioSeleccionado"
->
-</app-reservas-calendar>
-
+  <app-reservas-calendar *ngIf="idNegocioSeleccionado" [idNegocio]="idNegocioSeleccionado">
+  </app-reservas-calendar>
 </main>

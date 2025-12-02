@@ -46,3 +46,75 @@ legend {
 input.ng-invalid.ng-touched {
     border-color: var(--red-500, #f87171) !important;
 }
+
+/* Contenedor principal centrado vertical y horizontalmente */
+.registro-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Tema cliente: fondo claro */
+.cliente-theme {
+  background-color: #ffffff; /* blanco */
+  color: #000000; /* texto negro */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Tema gerente: fondo oscuro */
+.gerente-theme {
+  background-color: #1f1f1f; /* gris oscuro */
+  color: #ffffff; /* texto blanco */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Ajuste de inputs según tema */
+.gerente-theme input {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+.cliente-theme input {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.cliente-theme input:focus {
+  background-color: #efefef;
+}
+
+/* Mantener coherencia de texto y legend dentro de fieldset */
+.cliente-theme legend,
+.cliente-theme label {
+  color: #000000;
+}
+
+.gerente-theme legend,
+.gerente-theme label {
+  color: #ffffff;
+}
+
+/* Texto del link en registro/login */
+.login-link {
+  font-size: 0.95rem;
+}
+
+/* Cliente: gris más oscuro sobre fondo blanco */
+.cliente-theme-text {
+  color: #333333; /* gris oscuro legible */
+}
+
+/* Gerente: blanco sobre fondo oscuro */
+.gerente-theme-text {
+  color: #ffffff;
+}
+
+/* Mantener el a subrayado y en negrita */
+.login-link a {
+  color: inherit; /* toma el color del padre */
+  text-decoration: underline;
+  font-weight: 600;
+}

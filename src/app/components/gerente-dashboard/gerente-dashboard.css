@@ -12,5 +12,37 @@
 }
 
 .p-card {
-  width: 300px;
+  width: 18.75rem;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap; /* permite que se apilen en móviles */
+  gap: 1rem;       /* separación entre tarjetas */
+  justify-content: space-between;
+}
+
+.dashboard-card {
+  min-width: 15.625rem;  
+  max-width: 31.25rem;  
+  width: 100%; /* ocupa todo el ancho disponible en móviles */
+  box-sizing: border-box;
+}
+
+.negocio-btn {
+  min-width: 5rem;
+  width: fit-content;
+  white-space: nowrap; /* evita que el texto se rompa */
+  overflow: hidden;   /* corta texto que exceda */
+  text-overflow: ellipsis; /* añade "..." si el nombre es largo */
+}
+
+.btn-acc-rapidas {
+  text-wrap: nowrap;
+}
+
+@media (max-width: 66.375rem) {
+  .dashboard-container {
+    justify-content: center; /* centrado solo en pantallas medianas/pequeñas */
+  }
 }

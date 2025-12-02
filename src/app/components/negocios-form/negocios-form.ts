@@ -116,6 +116,9 @@ export class NegociosForm {
           summary: 'Éxito',
           detail: 'Negocio actualizado correctamente',
         });
+        setTimeout(() => {
+          this.router.navigate(['/dashboard/negocios']);
+        }, 1500);
       },
       error: (err) => {
         let msg = 'Error desconocido';
@@ -145,7 +148,9 @@ export class NegociosForm {
           summary: 'Éxito',
           detail: 'Negocio creado correctamente',
         });
-        this.router.navigate(['/dashboard/negocios']);
+        setTimeout(() => {
+          this.router.navigate(['/dashboard/negocios']);
+        }, 1500);
       },
       error: (err) => {
         let msg = 'Error desconocido';

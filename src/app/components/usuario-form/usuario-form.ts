@@ -9,7 +9,6 @@ import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GerenteToolbar } from '../gerente-toolbar/gerente-toolbar';
-import e from 'express';
 import { Usuario } from '../../models/usuario.interface';
 @Component({
   selector: 'usuario-form',
@@ -41,7 +40,7 @@ export class UsuarioForm implements OnInit {
     private router: Router
   ) {}
 
-  editarUsuario(usuario: any) {
+  private editarUsuario(usuario: any) {
     if(this.userForm.valid) {
       this.usuarioService.update(usuario).subscribe({
         next: (resp) => {
@@ -78,6 +77,10 @@ export class UsuarioForm implements OnInit {
 
             // Esperar un tiempo antes de resetear el formulario
             setTimeout(() => {
+              if (this.rol === 'GERENTE') {
+                this.router.navigate(['/login-gerente']);
+              }
+              
               this.userForm.reset();
 
               // Envía datos al padre con ORIGIN REAL
