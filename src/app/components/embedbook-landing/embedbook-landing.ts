@@ -22,7 +22,7 @@ export class EmbedbookLanding {
   }
 
   managerFeatures = [
-    '🗂️ Gestión de servicios y empleados',
+    '🗂️ Gestión de servicios',
     '🕒 Horarios de apertura flexibles',
     '🗓️ Calendario en tiempo real',
     '✨ Integración inmediata mediante iFrame',
@@ -33,7 +33,7 @@ export class EmbedbookLanding {
   clientFeatures = [
     '⚡ Reserva en 3 clics',
     '📱 100% responsive',
-    '✔ Confirmación inmediata',
+    '🚀 Confirmación inmediata',
     '🧩 Integrado en la web del negocio',
     '📧 Avisos por email'
   ];

@@ -1,6 +1,6 @@
 <app-gerente-toolbar></app-gerente-toolbar>
 
-<p-card [header]="modoEdicion ? 'Editando Negocio: ' + negocio.nombre : 'Crear Negocio'">
+<p-card [header]="modoEdicion ? 'Editando Negocio: ' + negocio.nombre : 'Crear Negocio'" class="h-screen">
   <p-toast position="top-right"></p-toast>
   <form [formGroup]="negocioForm" (ngSubmit)="onSubmit()" class="p-fluid p-formgrid p-grid m-4">
     <!-- Nombre -->

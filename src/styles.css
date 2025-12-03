@@ -34,3 +34,105 @@
   font-weight: 600;
   font-style: italic;
 }
+
+/* Colores primarios */
+:root {
+  --p-primary-color: #10b981;       /* Verde principal */
+  --p-primary-50: #ecfdf5;
+  --p-primary-100: #d1fae5;
+  --p-primary-200: #a7f3d0;
+  --p-primary-300: #6ee7b7;
+
+  --p-secondary-color: #3b82f6;     /* Azul secundario */
+  --p-secondary-50: #eff6ff;
+  --p-secondary-100: #dbeafe;
+  --p-secondary-200: #bfdbfe;
+  --p-secondary-300: #93c5fd;
+
+  --p-danger-color: #ef4444;        /* Rojo de alertas */
+  --p-danger-50: #fef2f2;
+  --p-danger-100: #fee2e2;
+  --p-danger-200: #fecaca;
+  --p-danger-300: #fca5a5;
+
+  /* Colores de texto */
+  --p-text-primary-300: #6ee7b7;    /* Verde claro */
+  --p-text-black-alpha: rgba(0,0,0,0.87);
+  --p-text-white: #ffffff;
+
+  /* Fondos y superficies */
+  --p-surface-0: #ffffff;
+  --p-surface-50: #f9fafb;
+  --p-surface-100: #f3f4f6;
+  --p-surface-800: #1f2937;
+  --p-surface-900: #111827;
+}
+
+/* Estilos del texto */
+body {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+}
+
+small {
+  font-size: 0.875rem;
+}
+
+/* Botón primario */
+.btn-primary {
+  background-color: var(--p-primary-color);
+  color: var(--p-text-white);
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  transition: 0.2s;
+}
+.btn-primary:hover {
+  background-color: var(--p-primary-300);
+}
+
+/* Botón secundario */
+.btn-secondary {
+  background-color: var(--p-secondary-color);
+  color: var(--p-text-white);
+}
+.btn-secondary:hover {
+  background-color: var(--p-secondary-300);
+}
+
+/* Botón de peligro / alerta */
+.btn-danger {
+  background-color: var(--p-danger-color);
+  color: var(--p-text-white);
+}
+.btn-danger:hover {
+  background-color: var(--p-danger-300);
+}
+
+/* Inputs y Forms */
+input, textarea, select {
+  background-color: var(--p-surface-0);
+  border: 1px solid var(--p-primary-100);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--p-text-black-alpha);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--p-primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+/* Tarjetas */
+.card {
+  background-color: var(--p-surface-50);
+  color: var(--p-text-black-alpha);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}

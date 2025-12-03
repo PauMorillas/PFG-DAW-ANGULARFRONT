@@ -49,11 +49,27 @@
       </div>
     </p-card>
   </div>
+
   <button
     pButton
     label="Nuevo negocio"
     icon="pi pi-plus"
     class="p-button-success mb-4"
     (click)="goToNegocio()"
+    *ngIf="negocios && negocios.length !== 0"
   ></button>
+
+  <!-- Aviso cuando no hay negocios -->
+  <p-card *ngIf="negocios && negocios.length === 0" class="m-4 text-center">
+    <h3 class="mb-2 font-bold"><i class="pi pi-exclamation-triangle"></i> Aún no tienes negocios</h3>
+    <p>Aquí aparecerán tus negocios una vez crees tu primer negocio.</p>
+
+    <button
+      pButton
+      icon="pi pi-plus"
+      label="Crear un negocio ahora"
+      class="p-button-success mt-3"
+      (click)="goToNegocio()"
+    ></button>
+  </p-card>
 </div>

@@ -47,13 +47,40 @@ input.ng-invalid.ng-touched {
     border-color: var(--red-500, #f87171) !important;
 }
 
-/* Contenedor principal centrado vertical y horizontalmente */
+/* CONTENEDOR GENERAL */
 .registro-container {
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+}
+
+/* TOOLBAR SIEMPRE ARRIBA */
+.toolbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* CONTENEDOR QUE SE CENTRA (EL CARD) */
+.registro-wrapper {
+  margin-top: 4.5rem; /* altura de toolbar */
+  height: calc(100vh - 4.5rem);
+  display: flex;
+  align-items: center;       /* centro horizontal */
+  justify-content: center;   /* centro vertical */
+}
+
+/* TARJETA DEL FORM */
+.usuario-card {
+  width: fit-content;
+  max-width: 500px;
+}
+
+:host ::ng-deep .p-card-body {
+  height: max-content ;
 }
 
 /* Tema cliente: fondo claro */

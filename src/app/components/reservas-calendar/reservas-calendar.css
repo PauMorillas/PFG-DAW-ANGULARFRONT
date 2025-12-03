@@ -5,7 +5,7 @@
 
 /* Contenedor principal del calendario */
 .calendar-wrapper {
-  max-width: 1200px;     /* controla el tamaño máximo */
+  max-width: 75rem;     /* controla el tamaño máximo */
   margin: 0 auto;        /* centrado */
   padding: 1rem;
 }

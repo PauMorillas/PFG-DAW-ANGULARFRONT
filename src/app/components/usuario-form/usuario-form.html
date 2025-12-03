@@ -1,54 +1,96 @@
 <div class="registro-container">
-  <app-gerente-toolbar *ngIf="isGerente()"></app-gerente-toolbar>
+  <app-gerente-toolbar *ngIf="isGerente()" class="toolbar-fixed"></app-gerente-toolbar>
 
-  <p-card
-    header="Formulario de Usuario"
-    class="usuario-card"
-    [ngClass]="{ 'cliente-theme': rol === 'CLIENTE', 'gerente-theme': rol === 'GERENTE' }"
-  >
-    <p-toast position="top-right"></p-toast>
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="w-28rem">
-      <fieldset class="m-1 p-3 mb-1 pt-1">
-        <legend>Datos del {{ rol.toLowerCase() }}</legend>
-        <div class="p-fluid">
-          <div class="field mb-3">
-            <label for="nombre" class="montserrat-light">Nombre</label>
-            <input
-              pInputText
-              id="nombre"
-              type="text"
-              formControlName="nombre"
-              [ngClass]="{
-                'ng-invalid': userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched
-              }"
-              class="w-24rem min-w-12rem max-w-25rem"
-            />
+  <div class="registro-wrapper">
+    <p-card
+      header="Formulario de Usuario"
+      class="usuario-card"
+      [ngClass]="{ 'cliente-theme': rol === 'CLIENTE', 'gerente-theme': rol === 'GERENTE' }"
+    >
+      <p-toast position="top-right"></p-toast>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="w-28rem">
+        <fieldset class="m-1 p-3 mb-1 pt-1">
+          <legend>Datos del {{ rol.toLowerCase() }}</legend>
+          <div class="p-fluid">
+            <div class="field mb-3">
+              <label for="nombre" class="montserrat-light">Nombre</label>
+              <input
+                pInputText
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                [ngClass]="{
+                  'ng-invalid': userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched
+                }"
+                class="w-24rem min-w-12rem max-w-25rem"
+              />
 
-            <small class="p-error" *ngIf="getErrorMessage('nombre') as errorMessage">
-              {{ errorMessage }}
-            </small>
+              <small class="p-error" *ngIf="getErrorMessage('nombre') as errorMessage">
+                {{ errorMessage }}
+              </small>
+            </div>
+
+            <div class="field mb-3">
+              <label for="email">Correo</label>
+              <input
+                pInputText
+                id="email"
+                type="email"
+                formControlName="email"
+                [ngClass]="{
+                  'ng-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched
+                }"
+                class="w-24rem min-w-12rem max-w-25rem"
+              />
+
+              <small class="p-error" *ngIf="getErrorMessage('email') as errorMessage">
+                {{ errorMessage }}
+              </small>
+            </div>
+
+            <div class="field" *ngIf="rol === 'GERENTE'">
+              <label for="telf">Telefono</label>
+              <input
+                pInputText
+                id="telf"
+                type="tel"
+                formControlName="telf"
+                [ngClass]="{
+                  'ng-invalid': userForm.get('telf')?.invalid && userForm.get('telf')?.touched
+                }"
+                class="w-24rem min-w-12rem max-w-25rem"
+              />
+              <small class="p-error" *ngIf="getErrorMessage('telf') as errorMessage">
+                {{ errorMessage }}
+              </small>
+            </div>
+
+            <div class="field">
+              <label for="pass">Contraseña</label>
+              <input
+                pInputText
+                id="pass"
+                type="password"
+                formControlName="pass"
+                [ngClass]="{
+                  'ng-invalid': userForm.get('pass')?.invalid && userForm.get('pass')?.touched
+                }"
+                class="w-24rem min-w-12rem max-w-25rem"
+              />
+
+              <small class="p-error" *ngIf="getErrorMessage('pass') as errorMessage">
+                {{ errorMessage }}
+              </small>
+            </div>
           </div>
+        </fieldset>
 
-          <div class="field mb-3">
-            <label for="email">Correo</label>
-            <input
-              pInputText
-              id="email"
-              type="email"
-              formControlName="email"
-              [ngClass]="{
-                'ng-invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched
-              }"
-              class="w-24rem min-w-12rem max-w-25rem"
-            />
+        <!-- Solo mostrar si es cliente (teléfono opcional) -->
+        <div class="field" *ngIf="rol === 'CLIENTE'">
+          <fieldset class="m-1 p-3 mb-3 pt-1">
+            <legend>Datos del cliente opcionales</legend>
 
-            <small class="p-error" *ngIf="getErrorMessage('email') as errorMessage">
-              {{ errorMessage }}
-            </small>
-          </div>
-
-          <div class="field" *ngIf="rol === 'GERENTE'">
-            <label for="telf">Telefono</label>
+            <label for="telf">Telefono (Opcional)</label>
             <input
               pInputText
               id="telf"
@@ -59,63 +101,29 @@
               }"
               class="w-24rem min-w-12rem max-w-25rem"
             />
+
             <small class="p-error" *ngIf="getErrorMessage('telf') as errorMessage">
               {{ errorMessage }}
             </small>
-          </div>
-
-          <div class="field">
-            <label for="pass">Contraseña</label>
-            <input
-              pInputText
-              id="pass"
-              type="password"
-              formControlName="pass"
-              [ngClass]="{
-                'ng-invalid': userForm.get('pass')?.invalid && userForm.get('pass')?.touched
-              }"
-              class="w-24rem min-w-12rem max-w-25rem"
-            />
-
-            <small class="p-error" *ngIf="getErrorMessage('pass') as errorMessage">
-              {{ errorMessage }}
-            </small>
-          </div>
+          </fieldset>
         </div>
-      </fieldset>
 
-      <!-- Solo mostrar si es cliente (teléfono opcional) -->
-      <div class="field" *ngIf="rol === 'CLIENTE'">
-        <fieldset class="m-1 p-3 mb-3 pt-1">
-          <legend>Datos del cliente opcionales</legend>
+        <div class="flex justify-content-center m-2">
+          <p-button type="submit" [label]="textoBoton" [disabled]="userForm.invalid"></p-button>
+        </div>
+      </form>
 
-          <label for="telf">Telefono (Opcional)</label>
-          <input
-            pInputText
-            id="telf"
-            type="tel"
-            formControlName="telf"
-            [ngClass]="{
-              'ng-invalid': userForm.get('telf')?.invalid && userForm.get('telf')?.touched
-            }"
-            class="w-24rem min-w-12rem max-w-25rem"
-          />
-
-          <small class="p-error" *ngIf="getErrorMessage('telf') as errorMessage">
-            {{ errorMessage }}
-          </small>
-        </fieldset>
-      </div>
-
-      <div class="flex justify-content-center m-2">
-        <p-button type="submit" [label]="textoBoton" [disabled]="userForm.invalid"></p-button>
-      </div>
-    </form>
-
-    <p (click)="redirectToLogIn()" class="login-link cursor-pointer" 
-    [ngClass]="{'cliente-theme-text': rol === 'CLIENTE', 'gerente-theme-text': rol === 'GERENTE'}">
-      ¿Ya tienes cuenta?
-      <a class="font-semibold underline">Inicia sesión</a>
-    </p>
-  </p-card>
+      <p
+        (click)="redirectToLogIn()"
+        class="login-link cursor-pointer"
+        [ngClass]="{
+          'cliente-theme-text': rol === 'CLIENTE',
+          'gerente-theme-text': rol === 'GERENTE'
+        }"
+      >
+        ¿Ya tienes cuenta?
+        <a class="font-semibold underline">Inicia sesión</a>
+      </p>
+    </p-card>
+  </div>
 </div>

@@ -1,6 +1,6 @@
 <div class="landing-container">
   <section
-    class="hero surface-900 text-white flex flex-column align-items-center justify-content-center p-6"
+    class="presentation-card hero flex flex-column align-items-center justify-content-center p-6"
   >
     <h1 class="text-5xl font-bold mb-3 text-black-alpha-90">
       Gestiona tus reservas de forma automática
@@ -17,11 +17,10 @@
           (onClick)="goToPanel()"
         ></p-button>
       </a>
-      <a routerLink="/login">
+      <a routerLink="/registro-cliente">
         <p-button
           label="Soy Cliente – Reservar"
           class="p-button-rounded p-button-secondary"
-          (onClick)="goToCliente()"
         ></p-button>
       </a>
     </div>
@@ -49,10 +48,12 @@
       [value]="managerFeatures"
       [numVisible]="3"
       [numScroll]="1"
+      [circular]="true"
+      [autoplayInterval]="3500"
       [responsiveOptions]="carouselResponsiveOptions"
     >
-      <ng-template let-feature pTemplate="item">
-        <p-card class="p-4 surface-card shadow-3 border-round ml-3">
+      <ng-template let-feature pTemplate="item" class="feature-container">
+        <p-card class="feature p-4 surface-card shadow-3 border-round ml-3">
           {{ feature }}
         </p-card>
       </ng-template>
@@ -65,6 +66,8 @@
       [value]="clientFeatures"
       [numVisible]="3"
       [numScroll]="1"
+      [circular]="true"
+      [autoplayInterval]="3500"
       [responsiveOptions]="carouselResponsiveOptions"
     >
       <ng-template let-feature pTemplate="item">

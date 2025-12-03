@@ -1,19 +1,37 @@
 /* Fondo de todo el carrusel */
 .p-carousel {
-  background-color: #efefee; /* Cambia a tu color */
+  background-color: #ffffff;
   padding: 1rem;
   border-radius: 12px;
 }
 
 /* Punto INACTIVO */
-.p-carousel-indicator button {
-  background-color: #9ca3af !important; /* gris */
-  width: 12px !important;
-  height: 12px !important;
-  border-radius: 50%;
+::ng-deep .p-carousel-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: max-content;
 }
 
-/* Punto ACTIVO */
-.p-carousel-indicator.p-highlight button {
-  background-color: #4A90E2 !important; /* tu color */
+::ng-deep .p-carousel .p-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .p-carousel .p-carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hacer que la tarjeta ocupe todo el espacio del item */
+::ng-deep .p-carousel .p-carousel-item > * {
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.presentation-card {
+  background-color: #ffffff;
+
 }
