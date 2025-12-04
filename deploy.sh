@@ -1,21 +1,29 @@
-# Salir si hay algún error
+#!/bin/bash
+
 set -e
 
-# Variables
-PROJECT_DIR=$(pwd)
-DIST_DIR="$PROJECT_DIR/dist/PFG-DAW-ANGULARFRONT"
+DIST_DIR="dist/PFG-DAW-ANGULARFRONT/browser"
 BASE_HREF="/PFG-DAW-ANGULARFRONT/"
 
 echo "🧹 Limpiando carpeta de build antigua..."
 rm -rf "$DIST_DIR"
 
 echo "⚡ Generando build de producción..."
-ng build --configuration production --output-path="$DIST_DIR" --base-href "$BASE_HREF"
+ng build --configuration production --output-path="dist/PFG-DAW-ANGULARFRONT" --base-href "$BASE_HREF"
+
+echo "📁 Entrando en carpeta browser..."
+cd "$DIST_DIR"
 
 echo "📄 Copiando index.html a 404.html..."
-cp "$DIST_DIR/browser/index.html" "$DIST_DIR/browser/404.html"
+if [ -f "index.html" ]; then
+    cp index.html 404.html
+    echo "✅ Copia realizada"
+else
+    echo "❌ ERROR: index.html no existe"
+    exit 1
+fi
 
-echo "🚀 Desplegando en GitHub Pages..."
-npx angular-cli-ghpages --dir="$DIST_DIR/browser"
+echo "🚀 Subiendo a GitHub Pages..."
+npx angular-cli-ghpages --dir="."
 
-echo "✅ Deploy completado con éxito!"
+echo "🎉 Deploy completado con éxito!"

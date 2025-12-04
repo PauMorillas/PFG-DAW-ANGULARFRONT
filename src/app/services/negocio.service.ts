@@ -7,7 +7,7 @@ import { Negocio } from '../models/negocio.interface';
   providedIn: 'root',
 })
 export class NegocioService {
-  private apiUrl = 'http://localhost:8081/api'; // TODO: Cambiar a la url de Produccion
+  private apiUrl = 'https://embedbookapp.com/api'; // TODO: Cambiar a la url de Produccion
   constructor(private http: HttpClient) {}
 
   // ==== CRUD de Negocios ====

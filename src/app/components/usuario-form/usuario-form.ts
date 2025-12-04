@@ -32,7 +32,7 @@ export class UsuarioForm implements OnInit {
   modo: 'REGISTRO' | 'EDICION' = 'REGISTRO';
   userForm!: FormGroup; // Inicializa el formulario sin necesidad de asignarle un valor en constructor
   usuario!: Usuario;
-  private parentOrigin: string = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de tu app padre
+  private parentOrigin: string = 'https://embedbookapp.com'; // TODO: Produccion Reemplaza con el origen de tu app padre
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService,
@@ -150,7 +150,7 @@ export class UsuarioForm implements OnInit {
       try {
         this.parentOrigin = new URL(document.referrer).origin || this.parentOrigin;
       } catch {
-        this.parentOrigin = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de la app padre
+        this.parentOrigin = 'https://embedbookapp.com'; // TODO: Produccion Reemplaza con el origen de la app padre
       }
     }
 

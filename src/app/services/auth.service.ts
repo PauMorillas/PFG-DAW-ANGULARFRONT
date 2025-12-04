@@ -6,7 +6,7 @@ import { Usuario } from '../models/usuario.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = 'http://localhost:8081/api'; // TODO: Cambiar a la url de Produccion
+  private baseUrl = 'https://embedbookapp.com/api'; // TODO: Cambiar a la url de Produccion
 
   constructor(private http: HttpClient) {}
 

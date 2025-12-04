@@ -8,7 +8,7 @@ import { Servicio } from '../models/servicio.interface';
 })
 export class ServicioService {
 
-  private apiUrl = 'http://localhost:8081/api/servicios';
+  private apiUrl = 'https://embedbookapp.com/api/servicios';
 
   constructor(private http: HttpClient) {}
 

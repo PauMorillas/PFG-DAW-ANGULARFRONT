@@ -8,8 +8,8 @@ import { Reserva } from '../models/reserva.interface';
   providedIn: 'root',
 })
 export class ReservaService {
-  private publicUrl = 'http://localhost:8081/public/api/calendario'; // TODO: Cambiar a la url de Produccion
-  private reservasUrl = 'http://localhost:8081/api/reservas';
+  private publicUrl = 'https://embedbookapp.com/public/api/calendario'; // TODO: Cambiar a la url de Produccion
+  private reservasUrl = 'https://embedbookapp.com/api/reservas';
   constructor(private http: HttpClient) {}
 
   // Trae todos los eventos activos de un negocio

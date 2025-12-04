@@ -29,7 +29,7 @@ export class UsuarioLogin implements OnInit {
 
   loginForm!: FormGroup;
 
-  parentOrigin = 'http://localhost:8081';
+  parentOrigin = 'https://embedbookapp.com';
 
   constructor(
     private authService: AuthService,
@@ -66,7 +66,7 @@ export class UsuarioLogin implements OnInit {
       try {
         this.parentOrigin = new URL(document.referrer).origin || this.parentOrigin;
       } catch {
-        this.parentOrigin = 'http://localhost:8081'; // TODO: Produccion Reemplaza con el origen de la app padre
+        this.parentOrigin = 'https://embedbookapp.com'; // TODO: Produccion Reemplaza con el origen de la app padre
       }
     }
 
