@@ -1,29 +1,71 @@
-<app-gerente-toolbar></app-gerente-toolbar>
+<app-gerente-toolbar class="toolbar"></app-gerente-toolbar>
 
-<p-card [header]="'Detalles de la Reserva: ' + reserva?.id">
-  <p-toast></p-toast>
-  <p-confirmDialog></p-confirmDialog>
-  <div *ngIf="reserva; else loading">
-    <p><strong>Cliente:</strong> {{ reserva.clienteDTO.nombre }}</p>
-    <p><strong>Email:</strong> {{ reserva.clienteDTO.email }}</p>
-    <p><strong>Servicio:</strong> {{ reserva.servicioDTO.titulo }}</p>
-    <p><strong>Inicio:</strong> {{ reserva.fechaInicio | date : 'dd/MM/yyyy HH:mm' }}</p>
-    <p><strong>Fin:</strong> {{ reserva.fechaFin | date : 'dd/MM/yyyy HH:mm' }}</p>
-    <p>
-      <strong>Estado:</strong>
-      <p-tag [value]="reserva.estado" [severity]="getSeverity(reserva.estado)"></p-tag>
-    </p>
+<div class="reserva-detail-container">
+  <p-card class="w-8 md:w-6 lg:w-4 shadow-3 text-bold" header="Detalles de la Reserva">
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
 
-    <button
-      pButton
-      label="Cancelar Reserva"
-      class="p-button-danger mt-3"
-      *ngIf="reserva?.estado !== 'CANCELADA'"
-      (click)="confirmCancel()"
-    ></button>
-  </div>
+    <ng-container *ngIf="reserva; else loading">
+      <div class="flex flex-column gap-3">
 
-  <ng-template #loading>
-    <p>Cargando detalles de la reserva...</p>
-  </ng-template>
-</p-card>
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-user text-primary"></i>
+          <p class="m-0"><strong>Cliente:</strong> {{ reserva.clienteDTO.nombre }}</p>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-envelope text-primary"></i>
+          <p class="m-0">
+            <strong>Email:</strong>
+            <a class="text-primary hover:underline"
+               [href]="'mailto:' + reserva.clienteDTO.email">
+               {{ reserva.clienteDTO.email }}
+            </a>
+          </p>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-phone text-primary"></i>
+          <p class="m-0"><strong>Teléfono:</strong> {{ reserva.clienteDTO.telf }}</p>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-briefcase text-primary"></i>
+          <p class="m-0"><strong>Servicio:</strong> {{ reserva.servicioDTO.titulo }}</p>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-calendar-plus text-primary"></i>
+          <p class="m-0"><strong>Inicio:</strong> {{ reserva.fechaInicio | date : 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-calendar-minus text-primary"></i>
+          <p class="m-0"><strong>Fin:</strong> {{ reserva.fechaFin | date : 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+
+        <div class="flex align-items-center gap-2">
+          <i class="pi pi-info-circle text-primary"></i>
+          <p class="m-0">
+            <strong class="mr-2">Estado:</strong>
+            <p-tag [value]="reserva.estado" [severity]="getSeverity(reserva.estado)"></p-tag>
+          </p>
+        </div>
+
+        <button
+          pButton
+          label="Cancelar Reserva"
+          class="p-button-danger mt-3 w-full"
+          *ngIf="reserva?.estado !== 'CANCELADA'"
+          (click)="confirmCancel()"
+        ></button>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="flex justify-content-center py-4">
+        <p>Cargando detalles de la reserva...</p>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

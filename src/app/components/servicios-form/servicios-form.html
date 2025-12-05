@@ -1,6 +1,6 @@
 <p-card
   header="{{ modoEdicion ? 'Editar Servicio' : 'Crear Servicio' }}"
-  class="max-w-40rem mx-auto"
+  class="max-w-40rem mx-auto h-screen shadow-3 text-bold"
 >
   <form [formGroup]="form" (ngSubmit)="guardarHandler()" class="p-fluid p-formgrid grid gap-3">
     <!-- TITULO -->

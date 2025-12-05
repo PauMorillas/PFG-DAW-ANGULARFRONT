@@ -11,20 +11,22 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   loginGerente(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/gerentes/login`, credentials)
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error))
-      );
+    return this.http
+      .post<LoginResponse>(`${this.baseUrl}/gerentes/login`, credentials)
+      .pipe(catchError((error: HttpErrorResponse) => throwError(() => error)));
   }
 
   loginCliente(credentials: LoginRequest): Observable<Usuario> {
-    return this.http.post<Usuario>(`${this.baseUrl}/clientes/login`, credentials)
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error))
-      );
+    return this.http
+      .post<Usuario>(`${this.baseUrl}/clientes/login`, credentials)
+      .pipe(catchError((error: HttpErrorResponse) => throwError(() => error)));
   }
 
   logout(): void {
     localStorage.removeItem('session');
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('session');
   }
 }

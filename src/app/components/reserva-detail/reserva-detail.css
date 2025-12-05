@@ -1,0 +1,15 @@
+.toolbar {
+  height: 10vh;
+}
+
+.reserva-detail-container {
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reserva-card {
+  width: 90%;
+  max-width: 450px;
+}

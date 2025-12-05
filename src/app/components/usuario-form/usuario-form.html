@@ -1,5 +1,5 @@
 <div class="registro-container">
-  <app-gerente-toolbar *ngIf="isGerente()" class="toolbar-fixed"></app-gerente-toolbar>
+  <app-gerente-toolbar *ngIf="isGerente() && isLoged()" class="toolbar-fixed"></app-gerente-toolbar>
 
   <div class="registro-wrapper">
     <p-card

@@ -1,17 +1,4 @@
-<!-- Avisos para el Gerente-->
-<div *ngIf="!session" class="modal-backdrop">
-  <p-card
-    header="Atención"
-    class="flex flex-column align-items-center justify-content-center text-center"
-  >
-    <p class="mb-2">Debes iniciar sesión para acceder</p>
-    <div class="w-full flex justify-content-center mt-3">
-      <button pButton label="Aceptar" (click)="redirectToLogin()" class="p-button-success"></button>
-    </div>
-  </p-card>
-</div>
-
-<main *ngIf="session">
+<main>
   <app-gerente-toolbar></app-gerente-toolbar>
 
   <div class="dashboard-container flex flex-wrap gap-4 justify-center m-4">

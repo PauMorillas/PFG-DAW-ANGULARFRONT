@@ -47,19 +47,7 @@ export class GerenteDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!localStorage.getItem('session')) {
-      this.session = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Debes iniciar sesión',
-        sticky: true,
-        key: 'sessionCheck',
-      });
-    } else {
-      this.session = true;
-      this.cargarNegociosDelGerente();
-    }
+    this.cargarNegociosDelGerente();
   }
 
   cargarNegociosDelGerente() {

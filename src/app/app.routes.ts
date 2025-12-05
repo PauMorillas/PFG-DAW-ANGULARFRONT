@@ -8,39 +8,46 @@ import { NegociosForm } from './components/negocios-form/negocios-form';
 import { ServiciosNegocio } from './components/servicios-negocio/servicios-negocio';
 import { ServiciosForm } from './components/servicios-form/servicios-form';
 import { ReservasCalendar } from './components/reservas-calendar/reservas-calendar';
-import { App } from './app';
 import { ReservaDetail } from './components/reserva-detail/reserva-detail';
 import { NegociosGenerarScript } from './components/negocios-generar-script/negocios-generar-script';
 import { EmbedbookLanding } from './components/embedbook-landing/embedbook-landing';
 
+import { AuthGuard } from './guards/auth-guard';
+
 export const routes: Routes = [
   { path: '', component: EmbedbookLanding },
-  // ==== Rutas para formularios ====
+
+  // ==== Rutas para formularios (SIEMPRE PÚBLICAS) ====
   { path: 'registro-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'REGISTRO' } },
   { path: 'registro-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'REGISTRO' } },
-  { path: 'editar-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'EDICION' } },
-  { path: 'editar-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'EDICION' } },
+  { path: 'editar-gerente', component: UsuarioForm, data: { rol: 'GERENTE', modo: 'EDICION' }, canActivate: [AuthGuard] },
+  { path: 'editar-cliente', component: UsuarioForm, data: { rol: 'CLIENTE', modo: 'EDICION' }, canActivate: [AuthGuard] },
+
+  // ==== Logins (PÚBLICO) ====
   { path: 'login-gerente', component: UsuarioLogin, data: { rol: 'GERENTE' } },
   { path: 'login-cliente', component: UsuarioLogin, data: { rol: 'CLIENTE' } },
 
-  // === Dashboard ===
-  { path: 'dashboard', component: GerenteDashboardComponent },
-  { path: 'dashboard/negocios', component: NegociosGerente },
+  // === Dashboard (PROTEGIDO) ===
+  { path: 'dashboard', component: GerenteDashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/negocios', component: NegociosGerente, canActivate: [AuthGuard] },
 
-  // === Rutas específicas de negocios y servicios (crear/editar primero) ===
-  { path: 'dashboard/negocios/crear', component: NegociosForm },
-  { path: 'dashboard/negocios/:id/editar', component: NegociosForm },
+  // === Rutas de negocios (PROTEGIDAS) ===
+  { path: 'dashboard/negocios/crear', component: NegociosForm, canActivate: [AuthGuard] },
+  { path: 'dashboard/negocios/:id/editar', component: NegociosForm, canActivate: [AuthGuard] },
 
-  { path: 'dashboard/negocios/:id/servicios/crear', component: ServiciosForm },
-  { path: 'dashboard/negocios/:id/servicios/:idServicio/editar', component: ServiciosForm },
-  { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio },
-  { path: 'dashboard/negocios/:id/generar-script', component: NegociosGenerarScript},
-  // === Rutas para reservas con flag de modo ===
-  { path: 'dashboard/reservas/negocio/:id', component: ReservasCalendar, data: { modo: 'negocio' } },
-  { path: 'dashboard/reservas/servicio/:id', component: ReservasCalendar, data: { modo: 'servicio' } },
+  // === Servicios (PROTEGIDAS) ===
+  { path: 'dashboard/negocios/:id/servicios/crear', component: ServiciosForm, canActivate: [AuthGuard] },
+  { path: 'dashboard/negocios/:id/servicios/:idServicio/editar', component: ServiciosForm, canActivate: [AuthGuard] },
+  { path: 'dashboard/negocios/:id/servicios', component: ServiciosNegocio, canActivate: [AuthGuard] },
+  { path: 'dashboard/negocios/:id/generar-script', component: NegociosGenerarScript, canActivate: [AuthGuard] },
 
-  { path: 'reservas/detalle/:id', component: ReservaDetail },
+  // === Reservas (PROTEGIDAS) ===
+  { path: 'dashboard/reservas/negocio/:id', component: ReservasCalendar, data: { modo: 'negocio' }, canActivate: [AuthGuard] },
+  { path: 'dashboard/reservas/servicio/:id', component: ReservasCalendar, data: { modo: 'servicio' }, canActivate: [AuthGuard] },
 
-  // === Ruta fallback al final ===
+  // === Detalle reserva (PROTEGIDA) ===
+  { path: 'reservas/detalle/:id', component: ReservaDetail, canActivate: [AuthGuard] },
+
+  // === Ruta fallback ===
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

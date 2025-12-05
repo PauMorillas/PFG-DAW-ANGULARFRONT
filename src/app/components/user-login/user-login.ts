@@ -39,8 +39,6 @@ export class UsuarioLogin implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.checkSession();
-
     this.route.data.subscribe((data) => {
       if (data['rol']) {
         this.rol = data['rol'];
@@ -144,7 +142,7 @@ export class UsuarioLogin implements OnInit {
                 const payload = {
                   nombreCliente: resp.nombre,
                   correoElec: resp.email,
-                  telf: resp.telefono || '',
+                  telf: resp.telf || '',
                 };
                 window.parent.postMessage(
                   { type: 'clienteData', data: payload },
@@ -164,16 +162,6 @@ export class UsuarioLogin implements OnInit {
           });
         },
       });
-    }
-  }
-
-  private checkSession(): void {
-    const sessionStr = localStorage.getItem('session');
-    if (sessionStr) {
-      const session = JSON.parse(sessionStr);
-      if (Date.now() > session.expiresAt) {
-        localStorage.removeItem('session'); // sesión expirada
-      }
     }
   }
 

@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GerenteToolbar } from '../gerente-toolbar/gerente-toolbar';
 import { Usuario } from '../../models/usuario.interface';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'usuario-form',
   standalone: true,
@@ -37,7 +38,8 @@ export class UsuarioForm implements OnInit {
     private usuarioService: UsuarioService,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   private editarUsuario(usuario: any) {
@@ -258,6 +260,10 @@ export class UsuarioForm implements OnInit {
 
   isGerente(): boolean {
     return this.rol === 'GERENTE';
+  }
+
+  isLoged(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   redirectToLogIn() {
