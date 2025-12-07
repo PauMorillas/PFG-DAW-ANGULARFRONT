@@ -13,6 +13,7 @@ import { NegociosGenerarScript } from './components/negocios-generar-script/nego
 import { EmbedbookLanding } from './components/embedbook-landing/embedbook-landing';
 
 import { AuthGuard } from './guards/auth-guard';
+import { Embedbook404 } from './components/embedbook-404/embedbook-404';
 
 export const routes: Routes = [
   { path: '', component: EmbedbookLanding },
@@ -49,5 +50,5 @@ export const routes: Routes = [
   { path: 'reservas/detalle/:id', component: ReservaDetail, canActivate: [AuthGuard] },
 
   // === Ruta fallback ===
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', component: Embedbook404 },
 ];
