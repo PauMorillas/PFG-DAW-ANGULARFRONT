@@ -32,7 +32,7 @@ export class NegociosGenerarScript implements OnInit {
   ngOnInit(): void {
     const apiBaseUrl = environment.apiBaseUrl ?? '';
     this.idNegocio = Number(this.route.snapshot.paramMap.get('id'));
-    this.script = `<script src="${apiBaseUrl}js/widget-embed.js" data-service-id="${this.idNegocio}" type="application/javascript"></script>`;
+    this.script = `<script src="${apiBaseUrl}/js/widget-embed.js" data-service-id="${this.idNegocio}" type="application/javascript"></script>`;
 
     this.negocioService.getNegocioById(this.idNegocio).subscribe((data) => {
       this.negocio = data;
