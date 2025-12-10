@@ -1,7 +1,7 @@
 <div class="registro-container">
   <app-gerente-toolbar *ngIf="isGerente() && isLoged()" class="toolbar-fixed"></app-gerente-toolbar>
 
-  <div class="registro-wrapper">
+  <div class="registro-wrapper" [ngClass]="{ 'con-toolbar': isGerente() && isLoged() }">
     <p-card
       header="Formulario de Usuario"
       class="usuario-card"

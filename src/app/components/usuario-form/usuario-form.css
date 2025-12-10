@@ -66,11 +66,18 @@ input.ng-invalid.ng-touched {
 
 /* CONTENEDOR QUE SE CENTRA (EL CARD) */
 .registro-wrapper {
-  margin-top: 4.5rem; /* altura de toolbar */
-  height: calc(100vh - 4.5rem);
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
   display: flex;
   align-items: center;       /* centro horizontal */
   justify-content: center;   /* centro vertical */
+}
+
+.registro-wrapper.con-toolbar {
+  margin-top: 4.5rem;
+  height: calc(100vh - 4.5rem);
 }
 
 /* TARJETA DEL FORM */
@@ -95,6 +102,13 @@ input.ng-invalid.ng-touched {
   background-color: #1f1f1f; /* gris oscuro */
   color: #ffffff; /* texto blanco */
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* Inputs siempre adaptables al ancho del iframe */
+:host ::ng-deep input.p-inputtext {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
 }
 
 /* Ajuste de inputs según tema */
